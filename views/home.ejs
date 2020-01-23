@@ -1,3 +1,40 @@
+<%- include("partials/header") -%>
+
+
 <title>Blogs </title>
 </head>
+
 <body>
+
+  <div class="bodyContainer">
+
+  <div class="gridContainer">
+    <% posts.forEach(function(post) { %>
+     <div class="blogSnippetContainer">
+      <section class="blogSnippetTitle">
+        <h3> <%= post.Title%> </h3></section>
+       <section class="blogSnippetContent">
+         <p><%= post.Content.substring(0, 100)%> </p>
+         <a href="/posts/<%=post.title%>">Read More</a>
+     </section>
+       <section class="blogSnippetCategory">
+         <p>
+           Category:<%= post.Category %>
+           </p>
+         </section>
+       </div>
+
+    <% }) %>
+
+  </div>
+
+  <section class="sideBlogBar">
+   <!--- Placeholder text here --->
+
+
+  </section>
+
+  </div>
+
+
+<%- include("partials/footer") -%>

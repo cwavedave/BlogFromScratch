@@ -1,3 +1,23 @@
-<title>Blogs </title>
-</head>
-<body>
+<%- include("partials/header") -%>
+<h1> Compose </h1>
+<h6> <%= firstPost %></h6>
+<form class="" action="/compose" method="post">
+  <div class="form-group">
+          <label>Title</label>
+          <input class="form-control" type="text" name="title">
+          <label>Post</label>
+          <textarea class="form-control" name="content" rows="5" cols="30"></textarea>
+        </div>
+        <div class="form-group">
+        <h6> Select Category</h6>
+         <input type="radio" name="category" value="group1" checked> groupOne<br>
+        <input type="radio" name="category" value="group2"> groupTwo<br>
+        <input type="radio" name="category" value="group3"> groupThree
+      </div>
+
+      <button type="submit" name="button">Submit</button>
+      <button type="reset" name="reset">Clear Post </button>
+
+ </form>
+
+<%- include("partials/footer") -%>
