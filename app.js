@@ -5,6 +5,8 @@ const bodyParser = require("body-parser");
 const ejs = require("ejs");
 const _ = require("lodash");
 const mongoose = require ("mongoose");
+const location = require('countrycitystatejson')
+
 
 const app = express();
 
@@ -42,16 +44,26 @@ let firstPost = "Create a post";
 // HOMEPAGE GET
 app.get("/", function(req, res){
 
+  let countrySelection = location.getCountries();
+  let citySelection = location.getCities();
+
 let firstPost = "";
  Post.find({}, function(err, posts) {
    if (posts.length === 0)
    {
      firstPost = "Create your First Post";
-     res.render("compose", {firstPost: firstPost})
+     res.render("compose", {
+       firstPost: firstPost,
+       countrySelection: countrySelection,
+       citySelection: citySelection,})
    }
      else {
        firstPost = "Create a Post";
-       res.render("home", {posts: posts});
+       res.render("home", {
+         posts: posts,
+         countrySelection: countrySelection,
+         citySelection: citySelection,
+       });
      }
   });
 });
@@ -64,42 +76,59 @@ app.get("/about", function(req, res){
 // COMPOSE GET
 
 app.get("/compose", function(req,res) {
+
+let countrySelection = location.getCountries();
+let citySelection = location.getCities();
+
   Post.find({}, function (err, posts) {
   res.render("compose",
    {posts:posts,
-    firstPost: firstPost});
+    firstPost: firstPost,
+    countrySelection: countrySelection,
+  citySelection: citySelection,
+});
  });
 });
 
 // Dynamic POST
-app.get("/posts/:newpost", function(req,res) {
+app.get("/posts/:newPost", function(req,res) {
 
-  const requestedTitle = _.lowerCase(req.params.newpost);
   console.log("new post created");
-  Post.forEach(function(post) {
-    const storedTitle = _.lowerCase(req.body.title);
+
+ Post.find({}, (err, posts) => {
+  posts.forEach(function(post){
+    const requestedTitle = _.lowerCase(req.params.newPost);
+    const storedTitle = _.lowerCase(post.Title);
+    console.log(storedTitle);
+    console.log(requestedTitle);
     if (storedTitle === requestedTitle) {
       res.render("post", {
         title: post.Title,
         content: post.Content,
        category: post.Category
-      })
-    }
-
-  })
-})
+     });
+    } else {
+      console.log("error creating post page");
+        }
+      });
+    });
+  });
 
 // POST COMPOSE
 app.post("/compose", function(req, res) {
+
    const post = new Post ({
    Title: req.body.title,
    Content: req.body.content,
   Category: req.body.category
    });
-   console.log(post.Category);
+
+   function myFunc() {
+       res.redirect("/");  }
+   setTimeout(myFunc, 200);
    post.save(function(err){
-   res.redirect("/")});
-});
+   });
+ });
 
 // CONTACT GET
 app.get("/contact", function(req,res) {
@@ -115,6 +144,19 @@ app.get("/post", function(req,res) {
   res.render("post",
    {posts:posts});
  });
+});
+
+app.post("/resetDB", function(req, res) {
+  mongoose.connect('mongodb://localhost:27017/BlogDB', {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useFindAndModify: false }, function(){
+    mongoose.connection.db.dropDatabase();
+
+  });
+  function myFunc() {
+    res.redirect("/");  }
+setTimeout(myFunc, 1000);
 });
 
 

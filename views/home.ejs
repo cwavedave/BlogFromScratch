@@ -11,15 +11,18 @@
   <div class="gridContainer">
     <% posts.forEach(function(post) { %>
      <div class="blogSnippetContainer">
+       <img class="imageContainer" src="https://source.unsplash.com/500x200/?<%= post.Title %>" alt="">
+
       <section class="blogSnippetTitle">
         <h3> <%= post.Title%> </h3></section>
        <section class="blogSnippetContent">
          <p><%= post.Content.substring(0, 100)%> </p>
-         <a href="/posts/<%=post.title%>">Read More</a>
+         <a href="/posts/<%=post.Title%>">Read More</a>
+
      </section>
        <section class="blogSnippetCategory">
          <p>
-           Category:<%= post.Category %>
+           Category: <%= post.Category %>
            </p>
          </section>
        </div>
@@ -27,14 +30,13 @@
     <% }) %>
 
   </div>
+</div>
 
   <section class="sideBlogBar">
    <!--- Placeholder text here --->
 
 
   </section>
-
-  </div>
 
 
 <%- include("partials/footer") -%>

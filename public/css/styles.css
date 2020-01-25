@@ -4,11 +4,7 @@ body {
 }
 
 .bodyContainer {
-  margin: 5% 5%;
-}
-
-h3 {
-  margin: 0;
+  margin: 5% 3%;
 }
 
 .gridContainer {
@@ -25,6 +21,10 @@ h3 {
   -webkit-box-shadow: -1px 0px 68px 2px rgba(181,181,181,0.42);
   -moz-box-shadow: -1px 0px 68px 2px rgba(181,181,181,0.42);
   box-shadow: -1px 0px 68px 2px rgba(181,181,181,0.42);
+}
+
+.imageContainer {
+  width:100%;
 }
 
 .blogSnippetTitle {
