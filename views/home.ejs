@@ -5,13 +5,27 @@
 </head>
 
 <body>
-
   <div class="bodyContainer">
+
+   <section class="featuredPost">
+     <img class="featuredImage" src="https://source.unsplash.com/1200x600/?bold" alt="">
+     <section id="featuredTitle">
+       <h2>EXAMPLE PULLED IN TEXT</h2>
+       <p>
+        EXAMPLE PULLED IN SNIPPET THAT COULD RUN FOR A LITTLE BIT
+         </p>
+     </section>
+   </section>
+
 
   <div class="gridContainer">
     <% posts.forEach(function(post) { %>
      <div class="blogSnippetContainer">
-       <img class="imageContainer" src="https://source.unsplash.com/500x200/?<%= post.Title %>" alt="">
+
+       <section class="imageContainer">
+         <span class="spanLocation"><%= post.emojiLocation%></span>
+          <a href="/posts/<%=post.Title%>"><img class="imageImported" src="https://source.unsplash.com/750x350/?<%=post.Title%>" alt=""> </a>
+       </section>
 
       <section class="blogSnippetTitle">
         <h3> <%= post.Title%> </h3></section>
@@ -22,14 +36,12 @@
      </section>
        <section class="blogSnippetCategory">
          <p>
-           Category: <%= post.Category %>
            </p>
          </section>
        </div>
 
     <% }) %>
 
-  </div>
 </div>
 
   <section class="sideBlogBar">

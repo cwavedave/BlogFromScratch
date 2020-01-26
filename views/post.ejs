@@ -1,8 +1,20 @@
 <%- include("partials/header") -%>
 
 
-<%= title %>
-<%= content %>
+<div class="heroBlog" height="550px">
+  <img class="imageImportedLarge" src="https://source.unsplash.com/1600x550/?<%= title  %>" alt="">
+  <h2 class="imageHeroh2"<%= title %></h2>
+</div>
+
+<div class="blogContent">
+  <h2><%= title %></h2>
+  <h6><%= category %></h6>
+  <p>
+    <%= content %>
+
+    </p>
+</div>
+
 <%= category %>
 
 

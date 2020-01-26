@@ -1,4 +1,5 @@
 <%- include("partials/header") -%>
+<div class="bodyContainer">
 
 <div class="">
 <h1> Compose </h1>
@@ -11,14 +12,34 @@
           <textarea class="form-control" name="content" rows="5" cols="30"></textarea>
       </div>
 
-           <label for="Countries">Country:</label>
-      <input list="Countries" name="Country" placeholder="Which Country">
+      <label for="Countries">Country:</label>
+      <input list="Countries" name="Country" placeholder="Which Country" id="step1" required>
       <datalist id="Countries">
         <% countrySelection.forEach(function(country)  { %>
-        <option value=" <%=country.emoji %> <%= country.name %>">
+        <option value="none">none</option>
+        <option name="countrySelection" value=" <%=country.emoji%> <%=country.name %>">
+
           <% }) %>
       </datalist>
 
+
+      <label for="States">State:</label>
+      <input list="States" name="State" placeholder="Which State" id="step2" required>
+      <datalist id="States">
+        <% countrySelection.forEach(function(country)  { %>
+        <option name="stateSelection" value="">
+          <% }) %>
+      </datalist>
+
+      <label for="Cities">City:</label>
+      <input list="City" name="City" placeholder="Which City" id="step3" required>
+      <datalist id="Cities">
+        <% countrySelection.forEach(function(country)  { %>
+        <option name="citySelection" value="">
+          <% }) %>
+      </datalist>
+
+      <input id="date" name="date" value="<%= date %>" placeholder="<%= date %>">
 
      <section class="formSubmit">
       <button type="submit" name="button">Submit</button>

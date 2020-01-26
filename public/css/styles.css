@@ -1,10 +1,52 @@
 
 body {
-  background-color:white;
+  background-color:lightgrey;
+}
+
+#CTA {
+  background-color: transparent;
+  border: medium solid green;
+  padding: 5px 10px;
+  text-decoration: none;
+  color: white;
+  border-radius:6px;
+  font-weight: 700;
+  color: white;
+}
+
+
+#CTA:hover {
+  background-color: green;
+  border: medium solid white;
+  text-decoration: none;
+  color: snow;
+  text-shadow: 1px 1px 3px rgb(0,0,0,0.5);
 }
 
 .bodyContainer {
-  margin: 5% 3%;
+  margin: 3% 3%;
+}
+
+
+.featuredPost {
+  width: 100%;
+  max-width: 100%;
+  margin-bottom: 25px;
+  position: relative;
+}
+
+.featuredImage {
+  max-width: 100%;
+  z-index: 0;
+  width: inherit;
+}
+
+#featuredTitle {
+  position: absolute;
+  bottom:0;
+  color:white;
+  padding: 15px;
+  background-color: rgb(0,0,0,.8);
 }
 
 .gridContainer {
@@ -16,19 +58,94 @@ body {
 }
 
 .blogSnippetContainer {
+  width: inherit;
   background-color: white;
   border: thin solid lightgrey;
+  position: relative;
   -webkit-box-shadow: -1px 0px 68px 2px rgba(181,181,181,0.42);
   -moz-box-shadow: -1px 0px 68px 2px rgba(181,181,181,0.42);
   box-shadow: -1px 0px 68px 2px rgba(181,181,181,0.42);
 }
 
 .imageContainer {
+width: 100%;
+background-position: center;
+background-color: black;
+object-fit: cover;
+}
+
+.heroBlog {
+  margin: 0;
+  position: relative;
+}
+
+.imageImported {
+  margin: 0;
+  max-width: 100%;
+  position: relative;
+  z-index: 2!important;
+}
+
+.imageImportedLarge {
+  margin: 0;
   width:100%;
+  max-width: 100%;
+  position: relative;
+  z-index: -1!important;
+}
+
+.imageImported:hover {
+  opacity: .6;
+}
+
+.imageHeroh2 {
+  left: auto;
+  right:auto;
+  position: absolute;
+  z-index: 1;
+}
+
+.blogContent {
+  background-color: white;
+  padding: 3% 5%;
+  border: thin solid lightgrey;
+  -webkit-box-shadow: -1px 5px 68px 2px rgba(181,181,181,0.6);
+  -moz-box-shadow: -1px 5px 68px 2px rgba(181,181,181,0.6);
+  box-shadow: -1px 5px 68px 2px rgba(181,181,181,0.6);
+  z-index: 4;
+  min-height: 80vh;
+  max-height: 100%;
+  width: 87%;
+  position: fixed;
+  top:20%;
+  left: 5%;
+  right: 5%;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  overflow: auto;
+}
+
+@media only screen and (max-width: 750px) {
+  .blogContent {
+    position: fixed;
+    top:15%;
+  }
+}
+
+.spanLocation {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 15px;
+  background-color: white;
+  border-radius: 0 0 0px 25px;
+  z-index:999;
 }
 
 .blogSnippetTitle {
-  background-color:whitesmoke;
+  background: rgb(230,230,230);
+  background: linear-gradient(0deg, rgba(230,230,230,1) 0%, rgba(247,247,247,1) 50%, rgba(252,252,252,1) 100%);
   padding: 15px;
   color: grey;
   text-transform: capitalize;

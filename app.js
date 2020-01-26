@@ -6,8 +6,7 @@ const ejs = require("ejs");
 const _ = require("lodash");
 const mongoose = require ("mongoose");
 const location = require('countrycitystatejson')
-
-
+const date = require(__dirname + "/date.js");
 const app = express();
 
 // Run EJS in View Engine
@@ -33,16 +32,22 @@ app.use(express.static("public"));
 const postsSchema = {
   Title: String,
   Content: String,
-  Category: String
+  Category: String,
+  emojiLocation: String,
+  date: String
 };
 
 // Posts Model
 const Post = mongoose.model("Post", postsSchema);
 let firstPost = "Create a post";
-
+const day = date.getDate();
 
 // HOMEPAGE GET
 app.get("/", function(req, res){
+
+  Post.find().sort('descending').limit(1).find(function(err, latestPost) {
+  /*client.send*/console.log(JSON.stringify(latestPost));
+});
 
   let countrySelection = location.getCountries();
   let citySelection = location.getCities();
@@ -82,37 +87,43 @@ let citySelection = location.getCities();
 
   Post.find({}, function (err, posts) {
   res.render("compose",
-   {posts:posts,
+   {
+    posts:posts,
     firstPost: firstPost,
     countrySelection: countrySelection,
-  citySelection: citySelection,
-});
- });
-});
+    citySelection: citySelection,
+    date: date
+        });
+      });
+    });
 
 // Dynamic POST
 app.get("/posts/:newPost", function(req,res) {
 
-  console.log("new post created");
+  const requestedTitle = _.lowerCase(req.params.newPost);
 
  Post.find({}, (err, posts) => {
   posts.forEach(function(post){
-    const requestedTitle = _.lowerCase(req.params.newPost);
+
     const storedTitle = _.lowerCase(post.Title);
-    console.log(storedTitle);
-    console.log(requestedTitle);
+
     if (storedTitle === requestedTitle) {
       res.render("post", {
         title: post.Title,
         content: post.Content,
-       category: post.Category
-     });
+        category: post.Category,
+        posts: posts,
+        emojiLocation: post.emoji
+     }) // END IF
+     // todo find out why else is looping 5 times 
     } else {
+      console.log(err);
       console.log("error creating post page");
-        }
-      });
-    });
-  });
+    } // END ELSE
+      }); // END POSTS FOR EACH LOOP
+
+    }); // END POST FIND
+  }); // END GET
 
 // POST COMPOSE
 app.post("/compose", function(req, res) {
@@ -120,7 +131,9 @@ app.post("/compose", function(req, res) {
    const post = new Post ({
    Title: req.body.title,
    Content: req.body.content,
-  Category: req.body.category
+   Category: req.body.category,
+   emojiLocation: req.body.Country,
+   date: date
    });
 
    function myFunc() {
@@ -142,7 +155,10 @@ app.get("/contact", function(req,res) {
 app.get("/post", function(req,res) {
   Post.find({}, function (err, posts) {
   res.render("post",
-   {posts:posts});
+   {
+   posts: posts,
+   countrySelection: countrySelection,
+   citySelection: citySelection});
  });
 });
 
