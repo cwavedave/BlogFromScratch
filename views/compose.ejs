@@ -39,7 +39,7 @@
           <% }) %>
       </datalist>
 
-      <input id="date" name="date" value="<%= date %>" placeholder="<%= date %>">
+      <input type="hidden" name="date" id="todayDate"/>
 
      <section class="formSubmit">
       <button type="submit" name="button">Submit</button>
@@ -48,4 +48,6 @@
 
  </form>
 </div>
+
+<script type="text/javascript">
 <%- include("partials/footer") -%>

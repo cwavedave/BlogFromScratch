@@ -60,7 +60,8 @@ let firstPost = "";
      res.render("compose", {
        firstPost: firstPost,
        countrySelection: countrySelection,
-       citySelection: citySelection,})
+       citySelection: citySelection,
+       date: date,})
    }
      else {
        firstPost = "Create a Post";
@@ -115,7 +116,7 @@ app.get("/posts/:newPost", function(req,res) {
         posts: posts,
         emojiLocation: post.emoji
      }) // END IF
-     // todo find out why else is looping 5 times 
+     // todo find out why else is looping 5 times
     } else {
       console.log(err);
       console.log("error creating post page");
@@ -128,13 +129,30 @@ app.get("/posts/:newPost", function(req,res) {
 // POST COMPOSE
 app.post("/compose", function(req, res) {
 
+  function getDate()
+  {
+      var today = new Date();
+
+      const options = {
+        weekday: "long",
+        day: "numeric",
+        month: "long",
+        hour: "numeric",
+        minute: "numeric",
+      };
+
+      return today.toLocaleDateString("en-ES", options);;
+  }
+
    const post = new Post ({
-   Title: req.body.title,
+   Title: _.capitalize(req.body.title),
    Content: req.body.content,
    Category: req.body.category,
    emojiLocation: req.body.Country,
-   date: date
+   date: getDate()
    });
+
+console.log(date);
 
    function myFunc() {
        res.redirect("/");  }
