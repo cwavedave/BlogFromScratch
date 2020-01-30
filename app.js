@@ -45,9 +45,10 @@ const day = date.getDate();
 // HOMEPAGE GET
 app.get("/", function(req, res){
 
-  Post.find().sort('descending').limit(1).find(function(err, latestPost) {
-  /*client.send*/console.log(JSON.stringify(latestPost));
-});
+  Post.find().sort('date').limit(1).find(function(err, latestPost) {
+    latestPost.forEach(function(featurePost){
+       console.log(featurePost.Title);
+
 
   let countrySelection = location.getCountries();
   let citySelection = location.getCities();
@@ -69,11 +70,15 @@ let firstPost = "";
          posts: posts,
          countrySelection: countrySelection,
          citySelection: citySelection,
+         featurePost: featurePost
        });
      }
   });
+
+});
 });
 
+});
 // About Page
 app.get("/about", function(req, res){
   res.render("about", {posts: posts});
@@ -151,8 +156,6 @@ app.post("/compose", function(req, res) {
    emojiLocation: req.body.Country,
    date: getDate()
    });
-
-console.log(date);
 
    function myFunc() {
        res.redirect("/");  }

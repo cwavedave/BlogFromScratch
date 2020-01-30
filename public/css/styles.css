@@ -33,6 +33,18 @@ body {
   text-shadow: 1px 1px 3px rgb(0,0,0,0.5);
 }
 
+
+#featureContent {
+  font-size:.9rem;
+  margin: 0;
+  margin-bottom:.5rem;}
+
+#featuredDate {
+  font-size: .8rem;
+  text-decoration: underline;
+  margin: 0; }
+
+
 .bodyContainer {
   margin: 3% 3%;
 }
@@ -41,7 +53,7 @@ body {
 .featuredPost {
   width: 100%;
   max-width: 100%;
-  height: 600px;
+  height: 100%;;
   margin-bottom: 25px;
   background-repeat: no-repeat;
   position: relative;
@@ -54,6 +66,12 @@ body {
   max-width: 100%;
   z-index: 0;
   width: inherit;
+}
+
+#featureImage {
+  max-width: 100%;
+  z-index: 0;
+  width: 100%;
 }
 
 #featuredTitle {
@@ -109,6 +127,14 @@ background-position: center;
   position: relative;
   background-size: cover;
   z-index: 2!important;
+}
+
+
+#featuredTitle {
+  width: 100%;
+  max-width: 100%;
+  position: relative;
+  background-size: cover;
 }
 
 .imageImportedLarge {
