@@ -7,8 +7,12 @@
 <body>
   <div class="bodyContainer">
 
-   <section class="featuredPost imageContainer">
-    <img id="featureImage" src="https://source.unsplash.com/1200x600/?<%=featurePost.Title%>" alt="">
+   <div class="featuredPost">
+     <section class="featureImageContainer">
+
+    <img id="featureImage" src="https://source.unsplash.com/1366x768/?<%=featurePost.Title%>" alt="">
+  </section>
+
      <section id="featuredTitle">
        <h2><%=featurePost.Title%></h2>
        <p id="featureContent">
@@ -18,7 +22,7 @@
           <%= featurePost.date %>
            </p>
      </section>
-   </section>
+   </div>
 
 
   <div class="gridContainer">

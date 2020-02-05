@@ -2,15 +2,90 @@ nav {
   padding: 10px 3%!important;
 }
 
-
 body {
   background: rgb(255,255,255);
-  background: -moz-linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(246,246,246,1) 20%, rgba(240,240,240,1) 40%, rgba(235,235,235,1) 60%, rgba(240,240,240,1) 80%, rgba(235,235,235,1) 100%);
-  background: -webkit-linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(246,246,246,1) 20%, rgba(240,240,240,1) 40%, rgba(235,235,235,1) 60%, rgba(240,240,240,1) 80%, rgba(235,235,235,1) 100%);
-  background: linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(246,246,246,1) 20%, rgba(240,240,240,1) 40%, rgba(235,235,235,1) 60%, rgba(240,240,240,1) 80%, rgba(235,235,235,1) 100%);
+  background: -moz-linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(250,250,250,1) 20%, rgba(245,245,245,1) 40%, rgba(240,240,240,1) 60%, rgba(235,235,235,1) 80%, rgba(230,230,230,1) 100%);
+  background: -webkit-linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(250,250,250,1) 20%, rgba(245,245,245,1) 40%, rgba(240,240,240,1) 60%, rgba(235,235,235,1) 80%, rgba(230,230,230,1) 100%);
+  background: linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(250,250,250,1) 20%, rgba(245,245,245,1) 40%, rgba(240,240,240,1) 60%, rgba(235,235,235,1) 80%, rgba(230,230,230,1) 100%);
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#ffffff",endColorstr="#ebebeb",GradientType=1);
   background-repeat: no-repeat;
   background-size: cover;
+}
+
+body.loaded {
+  opacity: 1;
+  transition: 1s opacity;
+}
+
+.loaded .heroBlog .imageImportedLarge {
+  transform: scale(1);
+  transition: 7.5s transform;
+}
+
+.heroBlog .imageImportedLarge {
+  width: 100%;
+ position: absolute;
+ left: 0;
+ top: 0;
+ z-index: 1;
+ transform: translate3d(0,0,0) scale(1.25);
+ background-size: cover;
+}
+
+#featureImage {
+  min-height:300px;
+  margin: 0;
+  width: 100%;
+  max-width: 1600px;
+  position: relative;
+  background-size: cover!important;
+  z-index: 2!important;
+  min-height: 576px;
+  max-height: 900px;
+}
+
+.featureImageContainer {
+  background-color: lightgrey;
+  z-index: 2;
+  width: inherit;
+  max-width: 100%;
+  background-repeat: no-repeat;
+  position: relative;
+  background-size: cover;
+  background-position: center;
+  min-width: 320px;
+  min-height: 300px;
+}
+
+@media only screen and (max-width: 980px) {
+  #featureImage {
+    min-height: 150px;
+  }
+  .featureImageContainer {
+    min-height:150px;
+  }
+}
+
+
+
+.imageImported {
+  margin: 0;
+  width: 100%;
+  max-width: 100%;
+  position: relative;
+  background-size: cover;
+  z-index: 2!important;
+  min-height: 250px;
+  max-height: 300px;
+}
+
+.imageImportedLarge {
+  margin: 0;
+  width: 100%;
+  max-width: 100%;
+  position: relative;
+  background-size: cover;
+  z-index: 2!important;
 }
 
 #CTA {
@@ -44,17 +119,22 @@ body {
   text-decoration: underline;
   margin: 0; }
 
-
 .bodyContainer {
   margin: 3% 3%;
   min-height: 100vh;
+  max-width: 1600px;
 }
 
-
+@media only screen and (min-width: 1660px) {
+  .bodyContainer {
+    margin: 2.5% auto;
+  }
+}
 .featuredPost {
+  min-width: 320px;
   width: 100%;
   max-width: 100%;
-  height: 100%;;
+  height: 100%;
   margin-bottom: 25px;
   background-repeat: no-repeat;
   position: relative;
@@ -67,12 +147,6 @@ body {
   max-width: 100%;
   z-index: 0;
   width: inherit;
-}
-
-#featureImage {
-  max-width: 100%;
-  z-index: 0;
-  width: 100%;
 }
 
 #featuredTitle {
@@ -88,7 +162,7 @@ body {
 
 .gridContainer {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(450px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   grid-template-rows:    1fr;
   grid-column-gap: 10px;
   grid-row-gap: 20px;
@@ -105,8 +179,9 @@ body {
 }
 
 .imageContainer {
-min-height: 250px;
-z-index: 2;
+  min-height: 250px;
+  max-height: 300px;
+  z-index: 2;
 width: inherit;
 max-width: 100%;
 background-repeat: no-repeat;
@@ -121,16 +196,6 @@ background-position: center;
   position: relative;
 }
 
-.imageImported {
-  margin: 0;
-  width: 100%;
-  max-width: 100%;
-  position: relative;
-  background-size: cover;
-  z-index: 2!important;
-}
-
-
 #featuredTitle {
   width: 100%;
   max-width: 100%;
@@ -138,13 +203,6 @@ background-position: center;
   background-size: cover;
 }
 
-.imageImportedLarge {
-  margin: 0;
-  width:100%;
-  max-width: 100%;
-  position: relative;
-  z-index: -1!important;
-}
 
 .imageImported:hover {
   opacity: .6;
