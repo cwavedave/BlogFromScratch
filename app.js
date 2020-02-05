@@ -9,6 +9,9 @@ const location = require('countrycitystatejson')
 const date = require(__dirname + "/date.js");
 const app = express();
 
+import { LoremIpsum } from "lorem-ipsum";
+// const LoremIpsum = require("lorem-ipsum").LoremIpsum;
+
 // Run EJS in View Engine
 app.set('view engine', 'ejs');
 
@@ -88,6 +91,17 @@ app.get("/about", function(req, res){
 
 app.get("/compose", function(req,res) {
 
+const lorem = new LoremIpsum({
+  sentencesPerParagraph: {
+    max: 8,
+    min: 4
+  },
+  wordsPerSentence: {
+    max: 16,
+    min: 4
+  }
+});
+
 let countrySelection = location.getCountries();
 let citySelection = location.getCities();
 
@@ -98,6 +112,7 @@ let citySelection = location.getCities();
     firstPost: firstPost,
     countrySelection: countrySelection,
     citySelection: citySelection,
+    lorem: lorem,
     date: date
         });
       });
