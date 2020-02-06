@@ -43,54 +43,6 @@ const postsSchema = {
 
 // Posts Model
 const Post = mongoose.model("Post", postsSchema);
-let firstPost = "Create a post";
-const day = date.getDate();
-
-// HOMEPAGE GET
-app.get("/", function(req, res){
-
-  Post.find().sort('date').limit(1).find(function(err, latestPost) {
-    latestPost.forEach(function(featurePost){
-       console.log(featurePost.Title);
-
-
-  let countrySelection = location.getCountries();
-  let citySelection = location.getCities();
-
-let firstPost = "";
- Post.find({}, function(err, posts) {
-   if (posts.length === 0)
-   {
-     firstPost = "Create your First Post";
-     res.render("compose", {
-       firstPost: firstPost,
-       countrySelection: countrySelection,
-       citySelection: citySelection,
-       date: date,})
-   }
-     else {
-       firstPost = "Create a Post";
-       res.render("home", {
-         posts: posts,
-         countrySelection: countrySelection,
-         citySelection: citySelection,
-         featurePost: featurePost
-       });
-     }
-  });
-
-});
-});
-
-});
-// About Page
-app.get("/about", function(req, res){
-  res.render("about", {posts: posts});
-});
-
-// COMPOSE GET
-
-app.get("/compose", function(req,res) {
 
 const lorem = new LoremIpsum({
   sentencesPerParagraph: {
@@ -103,10 +55,64 @@ const lorem = new LoremIpsum({
   }
 });
 
+let loremGeneration = lorem.generateParagraphs(1);
+
+
+let firstPost = "Create a post";
+const day = date.getDate();
+
+// HOMEPAGE GET
+app.get("/", function(req, res){
+
+  let countrySelection = location.getCountries();
+  let citySelection = location.getCities();
+
+let firstPost = "";
+ Post.find({}, function(err, posts) {
+   if (posts.length === 0)
+   {
+     const randomTitle = uniqueNamesGenerator({ dictionaries: [adjectives, colors, animals] });
+
+     firstPost = "Create your First Post";
+     res.render("compose", {
+       firstPost: firstPost,
+       countrySelection: countrySelection,
+       citySelection: citySelection,
+       date: date,
+       randomTitle: randomTitle.split('_').join(' '),
+       lorem: loremGeneration,
+
+})
+   }
+     else {
+
+
+  Post.find().sort('date').limit(1).find(function(err, latestPost) {
+  latestPost.forEach(function(featurePost){
+  console.log(featurePost.Title);
+
+       firstPost = "Create a Post";
+       res.render("home", {
+         posts: posts,
+         countrySelection: countrySelection,
+         citySelection: citySelection,
+         featurePost: featurePost
+       });
+     }
+  )})};
+});
+});
+// About Page
+app.get("/about", function(req, res){
+  res.render("about", {posts: posts});
+});
+
+// COMPOSE GET
+
+app.get("/compose", function(req,res) {
+
 const randomTitle = uniqueNamesGenerator({ dictionaries: [adjectives, colors, animals] });
 console.log(randomTitle);
-
-let loremGeneration = lorem.generateParagraphs(1);
 
 let countrySelection = location.getCountries();
 let citySelection = location.getCities();
@@ -119,8 +125,9 @@ let citySelection = location.getCities();
     countrySelection: countrySelection,
     citySelection: citySelection,
     randomTitle: randomTitle.split('_').join(' '),
+    date: date,
     lorem: loremGeneration,
-    date: date
+
 
         });
       });
