@@ -16,7 +16,7 @@
      <section id="featuredTitle">
        <h2><%=featurePost.Title%></h2>
        <p id="featureContent">
-       <%=featurePost.Content%>... <a href="/posts/<%=featurePost.Title%>"> Read more </a>
+       <%=featurePost.Content.substring(0, 250)%>... <a href="/posts/<%=featurePost.Title%>"> Read more </a>
          </p>
          <p id="featuredDate">
           <%= featurePost.date %>

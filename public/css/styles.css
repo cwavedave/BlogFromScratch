@@ -29,6 +29,7 @@ body.loaded {
  top: 0;
  z-index: 1;
  transform: translate3d(0,0,0) scale(1.25);
+ height:inherit;
  background-size: cover;
 }
 
@@ -42,6 +43,24 @@ body.loaded {
   z-index: 2!important;
   min-height: 576px;
   max-height: 900px;
+}
+
+#secondNav {
+  background-color:rgb(0,0,0,0.3);
+  height: 60px;
+}
+
+#breadCrumb {
+  display: flex;
+}
+
+.breadCrumbs {
+  margin: 5px 15px;
+  color:white;
+}
+
+.breadCrumbs a {
+  color:white;
 }
 
 .featureImageContainer {
@@ -66,8 +85,6 @@ body.loaded {
   }
 }
 
-
-
 .imageImported {
   margin: 0;
   width: 100%;
@@ -83,9 +100,10 @@ body.loaded {
   margin: 0;
   width: 100%;
   max-width: 100%;
+  max-height: 30vh;
   position: relative;
   background-size: cover;
-  z-index: 2!important;
+  z-index: -1!important;
 }
 
 #CTA {
@@ -194,6 +212,7 @@ background-position: center;
 .heroBlog {
   margin: 0;
   position: relative;
+  max-height: 40vh;
 }
 
 #featuredTitle {

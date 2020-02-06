@@ -8,6 +8,7 @@ const mongoose = require ("mongoose");
 const location = require('countrycitystatejson')
 const date = require(__dirname + "/date.js");
 const app = express();
+const { uniqueNamesGenerator, adjectives, colors, animals } = require('unique-names-generator');
 
 import { LoremIpsum } from "lorem-ipsum";
 // const LoremIpsum = require("lorem-ipsum").LoremIpsum;
@@ -97,10 +98,15 @@ const lorem = new LoremIpsum({
     min: 4
   },
   wordsPerSentence: {
-    max: 16,
-    min: 4
+    max: 200,
+    min: 16
   }
 });
+
+const randomTitle = uniqueNamesGenerator({ dictionaries: [adjectives, colors, animals] });
+console.log(randomTitle);
+
+let loremGeneration = lorem.generateParagraphs(1);
 
 let countrySelection = location.getCountries();
 let citySelection = location.getCities();
@@ -112,8 +118,10 @@ let citySelection = location.getCities();
     firstPost: firstPost,
     countrySelection: countrySelection,
     citySelection: citySelection,
-    lorem: lorem,
+    randomTitle: randomTitle.split('_').join(' '),
+    lorem: loremGeneration,
     date: date
+
         });
       });
     });
