@@ -1,4 +1,4 @@
-<%- include("partials/header") -%>
+<%- include("partials/blogheader") -%>
 
 
 <div class="heroBlog" height="550px">
@@ -8,8 +8,11 @@
 <nav id="secondNav">
 <ul id="breadCrumb">
   <li class="breadCrumbs"><a href="/">Home</a></li>
-  <li class="breadCrumbs"><a href="/posts/<%= title %>"><%= title %> </a></li>
+  <li class="breadCrumbs"><a href="/posts/<%= title.split(' ').join('_') %>"><%= title %> </a></li>
+  <a id="CTABlog" href="/compose"><li class="breadCrumbs">NEW POST</li></a>
+
 </ul>
+
 </nav>
 <div class="blogContent">
   <h2><%= title %></h2>

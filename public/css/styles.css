@@ -52,6 +52,11 @@ body.loaded {
 
 #breadCrumb {
   display: flex;
+  flex-direction: row;
+}
+
+#CTABlog {
+  align-self: center;
 }
 
 .breadCrumbs {
