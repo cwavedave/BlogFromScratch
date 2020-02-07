@@ -159,9 +159,10 @@ body.loaded {
 
 #featureContent {
   font-size:.9rem;
-  margin: 0;
+  margin: auto;
   margin-bottom:.5rem;
-  width: 400px;}
+  width: 600px;
+  }
 
 #featuredDate {
   font-size: .8rem;

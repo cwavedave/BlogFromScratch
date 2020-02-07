@@ -7,6 +7,7 @@ const _ = require("lodash");
 const mongoose = require ("mongoose");
 const location = require('countrycitystatejson')
 const date = require(__dirname + "/date.js");
+const titleGeneration = require(__dirname + "/titleGenerator.js");
 const app = express();
 const { uniqueNamesGenerator, adjectives, colors, animals } = require('unique-names-generator');
 
@@ -46,17 +47,7 @@ const Post = mongoose.model("Post", postsSchema);
 let firstPost = "Create a post";
 const day = date.getDate();
 
-// HOMEPAGE GET
-app.get("/", function(req, res){
 
-  let countrySelection = location.getCountries();
-  let citySelection = location.getCities();
-
-
-let firstPost = "";
-
-
-// Put this in seperate files
 const lorem = new LoremIpsum({
   sentencesPerParagraph: {
     max: 8,
@@ -68,11 +59,14 @@ const lorem = new LoremIpsum({
   }
 });
 
-const randomTitle = uniqueNamesGenerator({ dictionaries: [adjectives, colors, animals] });
 const loremGeneration = lorem.generateParagraphs(1);
 
+// HOMEPAGE GET
+app.get("/", function(req, res){
 
-
+  let countrySelection = location.getCountries();
+  let citySelection = location.getCities();
+  let randomTitle = uniqueNamesGenerator({ dictionaries: [adjectives, colors, animals] });
 
  Post.find({}, function(err, posts) {
    if (posts.length === 0)
@@ -82,11 +76,12 @@ const loremGeneration = lorem.generateParagraphs(1);
        firstPost: firstPost,
        countrySelection: countrySelection,
        citySelection: citySelection,
-       randomTitle: randomTitle.split('_').join(' '),
+       randomTitle: titleGeneration.getTitle().split('_').join(' '),
        lorem: loremGeneration,
        date: date,})
    }
      else {
+       let firstPost = "";
        Post.find().sort('date').limit(1).find(function(err, latestPost) {
          latestPost.forEach(function(featurePost){
        res.render("home", {
@@ -110,8 +105,10 @@ app.get("/about", function(req, res){
 
 app.get("/compose", function(req,res) {
 
+let randomTitle = uniqueNamesGenerator({ dictionaries: [adjectives, colors, animals] });
 let countrySelection = location.getCountries();
 let citySelection = location.getCities();
+
 
   Post.find({}, function (err, posts) {
   res.render("compose",
@@ -120,7 +117,7 @@ let citySelection = location.getCities();
     firstPost: firstPost,
     countrySelection: countrySelection,
     citySelection: citySelection,
-    randomTitle: randomTitle.split('_').join(' '),
+    randomTitle: titleGeneration.getTitle(),
     lorem: loremGeneration,
     date: date
 
