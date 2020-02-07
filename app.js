@@ -49,49 +49,14 @@ const day = date.getDate();
 // HOMEPAGE GET
 app.get("/", function(req, res){
 
-  Post.find().sort('date').limit(1).find(function(err, latestPost) {
-    latestPost.forEach(function(featurePost){
-       console.log(featurePost.Title);
-
-
   let countrySelection = location.getCountries();
   let citySelection = location.getCities();
 
+
 let firstPost = "";
- Post.find({}, function(err, posts) {
-   if (posts.length === 0)
-   {
-     firstPost = "Create your First Post";
-     res.render("compose", {
-       firstPost: firstPost,
-       countrySelection: countrySelection,
-       citySelection: citySelection,
-       date: date,})
-   }
-     else {
-       firstPost = "Create a Post";
-       res.render("home", {
-         posts: posts,
-         countrySelection: countrySelection,
-         citySelection: citySelection,
-         featurePost: featurePost
-       });
-     }
-  });
 
-});
-});
 
-});
-// About Page
-app.get("/about", function(req, res){
-  res.render("about", {posts: posts});
-});
-
-// COMPOSE GET
-
-app.get("/compose", function(req,res) {
-
+// Put this in seperate files
 const lorem = new LoremIpsum({
   sentencesPerParagraph: {
     max: 8,
@@ -104,9 +69,46 @@ const lorem = new LoremIpsum({
 });
 
 const randomTitle = uniqueNamesGenerator({ dictionaries: [adjectives, colors, animals] });
-console.log(randomTitle);
+const loremGeneration = lorem.generateParagraphs(1);
 
-let loremGeneration = lorem.generateParagraphs(1);
+
+
+
+ Post.find({}, function(err, posts) {
+   if (posts.length === 0)
+   {
+     firstPost = "Create your First Post";
+     res.render("compose", {
+       firstPost: firstPost,
+       countrySelection: countrySelection,
+       citySelection: citySelection,
+       randomTitle: randomTitle.split('_').join(' '),
+       lorem: loremGeneration,
+       date: date,})
+   }
+     else {
+       Post.find().sort('date').limit(1).find(function(err, latestPost) {
+         latestPost.forEach(function(featurePost){
+       res.render("home", {
+         posts: posts,
+         countrySelection: countrySelection,
+         citySelection: citySelection,
+         featurePost: featurePost
+       });
+     }
+  )}
+)};
+});
+
+});
+// About Page
+app.get("/about", function(req, res){
+  res.render("about", {posts: posts});
+});
+
+// COMPOSE GET
+
+app.get("/compose", function(req,res) {
 
 let countrySelection = location.getCountries();
 let citySelection = location.getCities();

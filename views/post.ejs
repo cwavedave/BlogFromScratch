@@ -5,13 +5,16 @@
   <img class="imageImportedLarge" src="https://source.unsplash.com/2800x1450/?<%= title %>" alt="">
   <h2 class="imageHeroh2"<%= title %></h2>
 </div>
-<nav id="secondNav">
-<ul id="breadCrumb">
-  <li class="breadCrumbs"><a href="/">Home</a></li>
-  <li class="breadCrumbs"><a href="/posts/<%= title.split(' ').join('_') %>"><%= title %> </a></li>
-  <a id="CTABlog" href="/compose"><li class="breadCrumbs">NEW POST</li></a>
 
-</ul>
+<nav id="secondNav">
+
+   <ul id="breadCrumb">
+      <li class="breadCrumbs"><a href="/">Home</a></li>
+      <li class="breadCrumbs"><a href="/posts/<%= title.split(' ').join('_') %>"><%= title %> </a></li>
+      <a class="CTABlog" href="/compose">NEW POST</a>
+
+   </ul>
+
 
 </nav>
 <div class="blogContent">

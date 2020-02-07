@@ -15,13 +15,12 @@
       <input list="Countries" name="Country" placeholder="Which Country" id="step1" required>
       <datalist id="Countries">
         <% countrySelection.forEach(function(country)  { %>
-        <option value="none">none</option>
         <option name="countrySelection" value=" <%=country.emoji%> <%=country.name %>">
 
           <% }) %>
       </datalist>
 
-
+<!--
       <label for="States">State:</label>
       <input list="States" name="State" placeholder="Which State" id="step2" required>
       <datalist id="States">
@@ -36,17 +35,25 @@
         <% countrySelection.forEach(function(country)  { %>
         <option name="citySelection" value="">
           <% }) %>
-      </datalist>
+      </datalist> -->
 
       <input type="hidden" name="date" id="todayDate"/>
 
-     <section class="formSubmit">
-      <button type="submit" name="button">Submit</button>
-      <button type="reset" name="reset">Clear Post </button>
-      <button onclick="loremParagraph()">Click me</button>
-      <button onclick="random()">Click me</button>
+<div id="formFinal">
+      <section class="generation">
+      <!-- <h3>Generate</h3> -->
+      <button id="randomTitleGeneration" class="btn" onclick="random()"><i class="fas fa-question">Random Title</button>
+      <button id="loremTextButton" class="btn" onclick="loremParagraph()">Add Filler Text</button>
 
+      </section>
+
+     <section class="formSubmit">
+      <button id="submitPost btn" type="submit" name="button">Submit</button>
+      <button id="clearPost btn" type="reset" name="reset">Clear Post </button>
     </section>
+
+
+</div>
 
  </form>
 </div>
