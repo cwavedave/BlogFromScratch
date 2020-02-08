@@ -82,7 +82,7 @@ app.get("/", function(req, res){
    }
      else {
        let firstPost = "";
-       Post.find().sort('date').limit(1).find(function(err, latestPost) {
+       Post.find().sort('-date').limit(1).find(function(err, latestPost) {
          latestPost.forEach(function(featurePost){
        res.render("home", {
          posts: posts,
@@ -141,7 +141,8 @@ app.get("/posts/:newPost", function(req,res) {
         content: post.Content,
         category: post.Category,
         posts: posts,
-        emojiLocation: post.emoji
+        emojiLocation: post.emoji,
+        date: post.date
      }) // END IF
      // todo find out why else is looping 5 times
     } else {

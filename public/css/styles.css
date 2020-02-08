@@ -21,18 +21,6 @@ body.loaded {
   transition: 1s opacity;
 }
 
-#featureImage {
-  min-height:300px;
-  margin: 0;
-  width: 100%;
-  max-width: 1600px;
-  position: relative;
-  background-size: cover!important;
-  z-index: 2!important;
-  min-height: 576px;
-  max-height: 900px;
-}
-
 #secondNav {
   background-color:rgb(0,0,0,0.3);
   height: 60px;
@@ -85,16 +73,34 @@ body.loaded {
   background-position: center;
   min-width: 320px;
   min-height: 300px;
+  max-height:650px;
 }
 
-@media only screen and (max-width: 980px) {
-  #featureImage {
-    min-height: 150px;
-  }
-  .featureImageContainer {
-    min-height:150px;
-  }
+
+#featureImage {
+  min-height:300px;
+  margin: 0;
+  width: 100%;
+  max-width: 1200px;
+  position: relative;
+  background-size: cover!important;
+  z-index: 2!important;
+  min-height: 576px;
+  max-height: 650px;
 }
+
+.imageContainer {
+  min-height: 200px;
+  max-height: 300px;
+  z-index: 2;
+width: inherit;
+max-width: 100%;
+background-repeat: no-repeat;
+position: relative;
+background-size: cover;
+background-position: center;
+}
+
 
 .imageImported {
   margin: 0;
@@ -103,8 +109,18 @@ body.loaded {
   position: relative;
   background-size: cover;
   z-index: 2!important;
-  min-height: 250px;
+  min-height: 200px;
   max-height: 300px;
+}
+
+
+@media only screen and (max-width: 980px) {
+  #featureImage {
+    min-height: 150px;
+  }
+  .featureImageContainer {
+    min-height:150px;
+  }
 }
 
 .imageImportedLarge {
@@ -118,7 +134,8 @@ body.loaded {
   top:0;
   right: 3%;
   left: 0;
-  border: thick solid lightgrey;
+  border: thick inset lightgrey;
+  border-top: none;
 }
 
 .loaded .heroBlog .imageImportedLarge {
@@ -162,6 +179,7 @@ body.loaded {
   margin: auto;
   margin-bottom:.5rem;
   width: 600px;
+  color: lightgrey;
   }
 
 #featuredDate {
@@ -172,10 +190,10 @@ body.loaded {
 .bodyContainer {
   margin: 3% 3%;
   min-height: 100vh;
-  max-width: 1600px;
+  max-width: 1200px;
 }
 
-@media only screen and (min-width: 1660px) {
+@media only screen and (min-width: 1260px) {
   .bodyContainer {
     margin: 2.5% auto;
   }
@@ -228,18 +246,6 @@ body.loaded {
   box-shadow: -1px 0px 68px 2px rgba(181,181,181,0.42);
 }
 
-.imageContainer {
-  min-height: 250px;
-  max-height: 300px;
-  z-index: 2;
-width: inherit;
-max-width: 100%;
-background-repeat: no-repeat;
-position: relative;
-background-size: cover;
-background-position: center;
-}
-
 
 .heroBlog {
   margin: 0 auto;
@@ -274,8 +280,8 @@ background-position: center;
   -moz-box-shadow: -1px 5px 68px 2px rgba(181,181,181,0.6);
   box-shadow: -1px 5px 68px 2px rgba(181,181,181,0.6);
   z-index: 4;
-  min-height: 80vh;
-  max-height: 100%;
+  min-height: 50vh;
+  max-height: 75vh;
   width: 87%;
   position: fixed;
   top:20%;
@@ -285,6 +291,7 @@ background-position: center;
   margin-left: auto;
   margin-right: auto;
   overflow: auto;
+
 }
 
 @media only screen and (max-width: 750px) {
@@ -317,11 +324,18 @@ background-position: center;
 }
 
 #randomTitleGeneration {
+   background-color: tomato;
+   color:white;
+   padding: 15px;
+   margin: 10px;
 
 }
 
 #loremTextButton {
-
+   background-color: teal;
+   color:White;
+   padding: 15px;
+   margin: 10px;
 }
 
 .formSubmit {
@@ -354,4 +368,15 @@ background-position: center;
 .blogSnippetCategory {
   padding: 10px;
   padding: 15px 15px 15px 15px;
+}
+
+#datePost {
+  font-size:.8rem;
+  padding: 10px 0;
+  border-bottom: thin solid lightgrey;
+}
+
+.footer-padding {
+  margin-top: 45px;
+  padding-top: 45px;
 }

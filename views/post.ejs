@@ -2,7 +2,7 @@
 
 
 <div class="heroBlog" height="550px">
-  <img class="imageImportedLarge" src="https://source.unsplash.com/2800x1450/?<%= title %>" alt="">
+  <img class="imageImportedLarge" src="https://source.unsplash.com/2800x1450/?<%= title.split(" ").splice(-3) %>" alt="">
   <h2 class="imageHeroh2"<%= title %></h2>
 </div>
 
@@ -19,7 +19,7 @@
 </nav>
 <div class="blogContent">
   <h2><%= title %></h2>
-  <h6><%= category %></h6>
+  <h6 id="datePost"><%= date %></h6>
   <p>
     <%= content %>
 
