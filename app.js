@@ -9,7 +9,6 @@ const location = require('countrycitystatejson')
 const date = require(__dirname + "/date.js");
 const titleGeneration = require(__dirname + "/titleGenerator.js");
 const app = express();
-const { uniqueNamesGenerator, adjectives, colors, animals } = require('unique-names-generator');
 
 import { LoremIpsum } from "lorem-ipsum";
 // const LoremIpsum = require("lorem-ipsum").LoremIpsum;
@@ -23,7 +22,7 @@ app.use(bodyParser.urlencoded({
 }));
 
 // Set Database Access Port
-var conn = mongoose.connect("mongodb://localhost:27017/BlogDB", {
+var conn = mongoose.connect("mongodb+srv://blogsite:glDML9tJgu7IkzUA@cluster0-ybqsl.mongodb.net/blogsite", {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   useFindAndModify: false
@@ -66,7 +65,6 @@ app.get("/", function(req, res){
 
   let countrySelection = location.getCountries();
   let citySelection = location.getCities();
-  let randomTitle = uniqueNamesGenerator({ dictionaries: [adjectives, colors, animals] });
 
  Post.find({}, function(err, posts) {
    if (posts.length === 0)
@@ -98,14 +96,13 @@ app.get("/", function(req, res){
 });
 // About Page
 app.get("/about", function(req, res){
-  res.render("about", {posts: posts});
+  res.render("about", {});
 });
 
 // COMPOSE GET
 
 app.get("/compose", function(req,res) {
 
-let randomTitle = uniqueNamesGenerator({ dictionaries: [adjectives, colors, animals] });
 let countrySelection = location.getCountries();
 let citySelection = location.getCities();
 
