@@ -204,7 +204,7 @@ app.get("/post", function(req,res) {
 });
 
 app.post("/resetDB", function(req, res) {
-  mongoose.connect('mongodb://localhost:27017/BlogDB', {
+  mongoose.connect('mongodb+srv://blogsite:glDML9tJgu7IkzUA@cluster0-ybqsl.mongodb.net/blogsite', {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useFindAndModify: false }, function(){
