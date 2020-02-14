@@ -22,7 +22,8 @@ app.use(bodyParser.urlencoded({
 }));
 
 // Set Database Access Port
-var conn = mongoose.connect("mongodb+srv://blogsite:glDML9tJgu7IkzUA@cluster0-ybqsl.mongodb.net/blogsite", {
+var conn = mongoose.connect("mongodb://localhost:27017/wikiDB", {
+
   useNewUrlParser: true,
   useUnifiedTopology: true,
   useFindAndModify: false
@@ -58,7 +59,7 @@ const lorem = new LoremIpsum({
   }
 });
 
-const loremGeneration = lorem.generateParagraphs(1);
+const loremGeneration = lorem.gene rateParagraphs(1);
 
 // HOMEPAGE GET
 app.get("/", function(req, res){
@@ -204,7 +205,8 @@ app.get("/post", function(req,res) {
 });
 
 app.post("/resetDB", function(req, res) {
-  mongoose.connect('mongodb+srv://blogsite:glDML9tJgu7IkzUA@cluster0-ybqsl.mongodb.net/blogsite', {
+  mongoose.connect('mongoose.connect("mongodb://localhost:27017/wikiDB", {
+', {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useFindAndModify: false }, function(){
