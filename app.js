@@ -59,7 +59,7 @@ const lorem = new LoremIpsum({
   }
 });
 
-const loremGeneration = lorem.gene rateParagraphs(1);
+const loremGeneration = lorem.generateParagraphs(1);
 
 // HOMEPAGE GET
 app.get("/", function(req, res){
@@ -205,8 +205,7 @@ app.get("/post", function(req,res) {
 });
 
 app.post("/resetDB", function(req, res) {
-  mongoose.connect('mongoose.connect("mongodb://localhost:27017/wikiDB", {
-', {
+  mongoose.connect("mongodb://localhost:27017/wikiDB", {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useFindAndModify: false }, function(){
