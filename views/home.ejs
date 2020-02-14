@@ -24,7 +24,19 @@
      </section>
    </div>
 
+<section id="searchBarSection">
 
+   <h2> Search </h2>
+   <form class="" action="/search" method="post">
+
+   <input id="searchBar" type="text" name="search" placeholder="Search.." autofocus />
+   <button type="submit"><i class="fa fa-search"></i></button>
+
+</form>
+</section>
+
+
+<div id="bottomHalf">
   <div class="gridContainer">
     <% posts.forEach(function(post) { %>
 
@@ -44,13 +56,10 @@
          Published: <%= post.date %>
            </p>
      </section>
-       <section class="blogSnippetCategory">
-         <p>
-           </p>
-         </section>
-       </div>
 
+</div>
     <% }) %>
+
 
 </div>
 

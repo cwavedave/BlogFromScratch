@@ -22,7 +22,7 @@ app.use(bodyParser.urlencoded({
 }));
 
 // Set Database Access Port
-var conn = mongoose.connect("mongodb://localhost:27017/wikiDB", {
+var conn = mongoose.connect("mongodb://localhost:27017/blogDB", {
 
   useNewUrlParser: true,
   useUnifiedTopology: true,
@@ -61,8 +61,10 @@ const lorem = new LoremIpsum({
 
 const loremGeneration = lorem.generateParagraphs(1);
 
-// HOMEPAGE GET
-app.get("/", function(req, res){
+// HOMEPAGE
+
+app.route("/")
+.get (function(req, res){
 
   let countrySelection = location.getCountries();
   let citySelection = location.getCities();
@@ -93,16 +95,19 @@ app.get("/", function(req, res){
   )}
 )};
 });
-
 });
+
 // About Page
-app.get("/about", function(req, res){
+app.route("/about")
+
+.get(function(req, res){
   res.render("about", {});
 });
 
-// COMPOSE GET
+// COMPOSE
 
-app.get("/compose", function(req,res) {
+app.route("/compose")
+.get(function(req,res) {
 
 let countrySelection = location.getCountries();
 let citySelection = location.getCities();
@@ -121,28 +126,61 @@ let citySelection = location.getCities();
 
         });
       });
-    });
+    })
 
-// Dynamic POST
-app.get("/posts/:newPost", function(req,res) {
 
-  const requestedTitle = _.lowerCase(req.params.newPost);
+.post(function(req, res) {
 
- Post.find({}, (err, posts) => {
-  posts.forEach(function(post){
+      function getDate()
+      {
+          var today = new Date();
 
-    const storedTitle = _.lowerCase(post.Title);
+          const options = {
+            weekday: "long",
+            day: "numeric",
+            month: "long",
+            hour: "numeric",
+            minute: "numeric",
+          };
 
-    if (storedTitle === requestedTitle) {
+          return today.toLocaleDateString("en-ES", options);;
+      }
+
+       const post = new Post ({
+       Title: _.capitalize(req.body.title),
+       Content: req.body.content,
+       Category: req.body.category,
+       emojiLocation: req.body.Country,
+       date: getDate()
+       });
+
+       function myFunc() {
+           res.redirect("/");  }
+       setTimeout(myFunc, 200);
+       post.save(function(err){
+       });
+     });
+
+app.route("/posts/:newpost")
+
+.get(function(req,res) {
+
+  const requestedTitle = _.lowerCase(req.params.newpost);
+  console.log(requestedTitle);
+
+    Post.findOne({Title:requestedTitle}, (err, postFound) => {
+    if (postFound)
+    {
+      console.log("New Post Generated");
       res.render("post", {
-        title: post.Title,
-        content: post.Content,
-        category: post.Category,
-        posts: posts,
-        emojiLocation: post.emoji,
-        date: post.date
-     }) // END IF
-     // todo find out why else is looping 5 times
+        title: postFound.Title,
+        content: postFound.Content,
+        category: postFound.Category,
+        posts: postFound,
+        emojiLocation: postFound.emoji,
+        date: postFound.date
+     });
+
     } else {
       console.log(err);
       console.log("error creating post page");
@@ -150,40 +188,6 @@ app.get("/posts/:newPost", function(req,res) {
       }); // END POSTS FOR EACH LOOP
 
     }); // END POST FIND
-  }); // END GET
-
-// POST COMPOSE
-app.post("/compose", function(req, res) {
-
-  function getDate()
-  {
-      var today = new Date();
-
-      const options = {
-        weekday: "long",
-        day: "numeric",
-        month: "long",
-        hour: "numeric",
-        minute: "numeric",
-      };
-
-      return today.toLocaleDateString("en-ES", options);;
-  }
-
-   const post = new Post ({
-   Title: _.capitalize(req.body.title),
-   Content: req.body.content,
-   Category: req.body.category,
-   emojiLocation: req.body.Country,
-   date: getDate()
-   });
-
-   function myFunc() {
-       res.redirect("/");  }
-   setTimeout(myFunc, 200);
-   post.save(function(err){
-   });
- });
 
 // CONTACT GET
 app.get("/contact", function(req,res) {
@@ -193,24 +197,24 @@ app.get("/contact", function(req,res) {
  });
 });
 
-// POST(SINGLE) GET
-app.get("/post", function(req,res) {
-  Post.find({}, function (err, posts) {
-  res.render("post",
-   {
-   posts: posts,
-   countrySelection: countrySelection,
-   citySelection: citySelection});
- });
-});
+app.route("/search")
+
+.get(function(req,res) {
+  res.render("search");
+})
+
+.post(function(req,res) {
+    console.log(req.body.search);
+   requestedSearch = req.body.search;
+        
+})
 
 app.post("/resetDB", function(req, res) {
-  mongoose.connect("mongodb://localhost:27017/wikiDB", {
+  mongoose.connect("mongodb://localhost:27017/blogDB", {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useFindAndModify: false }, function(){
     mongoose.connection.db.dropDatabase();
-
   });
   function myFunc() {
     res.redirect("/");  }

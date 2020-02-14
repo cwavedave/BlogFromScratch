@@ -187,6 +187,21 @@ background-position: center;
   text-decoration: underline;
   margin: 0; }
 
+
+/* Search Section */
+
+#searchBar {
+  width: 100%;
+}
+
+#searchBarSection
+{
+  width: 400px;
+  margin: 0 auto;
+  padding: 45px 0 75px 0;
+  text-align: center;
+}
+
 .bodyContainer {
   margin: 3% 3%;
   min-height: 100vh;
