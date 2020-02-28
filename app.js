@@ -206,7 +206,8 @@ app.route("/search")
 .post(function(req,res) {
     console.log(req.body.search);
    requestedSearch = req.body.search;
-        
+   Post.find({title:str.includesreq.body.search})
+
 })
 
 app.post("/resetDB", function(req, res) {
