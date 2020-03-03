@@ -1,5 +1,8 @@
 //jshint esversion:6
 
+require('dotenv').config()
+"use strict";
+
 const express = require("express");
 const bodyParser = require("body-parser");
 const ejs = require("ejs");
@@ -8,7 +11,12 @@ const mongoose = require ("mongoose");
 const location = require('countrycitystatejson')
 const date = require(__dirname + "/date.js");
 const titleGeneration = require(__dirname + "/titleGenerator.js");
+const passport = require("passport");
+const passportLocalMongoose = require("passport-local-mongoose");
+const GoogleStrategy = require("passport-google-oauth20").Strategy;
+const findOrCreate = require('mongoose-findorcreate');
 const app = express();
+
 
 import { LoremIpsum } from "lorem-ipsum";
 // const LoremIpsum = require("lorem-ipsum").LoremIpsum;
@@ -21,29 +29,79 @@ app.use(bodyParser.urlencoded({
   extended: true
 }));
 
+app.use(bodyParser.urlencoded({extended: true}));
+app.use(express.static("public"));
+app.use(passport.initialize());
+app.use(passport.session());
+
 // Set Database Access Port
 var conn = mongoose.connect("mongodb://localhost:27017/blogDB", {
-
   useNewUrlParser: true,
   useUnifiedTopology: true,
   useFindAndModify: false
 });
 
-app.use(bodyParser.urlencoded({extended: true}));
-app.use(express.static("public"));
+mongoose.set("useCreateIndex", true);
 
-// Posts Schema
+// =============================================================================
+//                         SCHEMAS / MODELS / PLUGINS
+// =============================================================================
 
-const postsSchema = {
+const postsSchema = new mongoose.Schema ({
   Title: String,
   Content: String,
   Category: String,
   emojiLocation: String,
   date: String
-};
+});
 
 // Posts Model
 const Post = mongoose.model("Post", postsSchema);
+
+const userSchema = new mongoose.Schema ({
+  email : String,
+  password : String,
+  googleId: String,
+  posts: [postsSchema]
+});
+
+userSchema.plugin(passportLocalMongoose);
+userSchema.plugin(findOrCreate);
+
+const User = new mongoose.model("User", userSchema);
+
+//--------------------------------------------------------------------------------
+
+// passportLocalMongoose used to create local login strategy
+passport.use(User.createStrategy());
+
+// Passport used to serialize & deseralize User
+passport.serializeUser(function(user, done) {
+  done(null, user.id);
+});
+
+passport.deserializeUser(function(id, done) {
+  User.findById(id, function(err, user) {
+    done(err, user);
+  });
+});
+
+passport.use(new GoogleStrategy({
+    clientID: process.env.CLIENT_ID,
+    clientSecret: process.env.CLIENT_SECRET,
+    callbackURL: "http://localhost:3000/auth/google/posts",
+    userProfileURL: "https://www.googleapis.com/oauth2/v3/userinfo"
+  },
+  function(accessToken, refreshToken, profile, cb) {
+    console.log(profile);
+
+    User.findOrCreate({ googleId: profile.id, name: profile.name.givenName }, function (err, user) {
+      return cb(err, user);
+      console.log(req.user);
+    });
+  }
+));
+
 let firstPost = "Create a post";
 const day = date.getDate();
 
@@ -61,7 +119,9 @@ const lorem = new LoremIpsum({
 
 const loremGeneration = lorem.generateParagraphs(1);
 
-// HOMEPAGE
+//==============================================================================
+//                               HOME PAGE
+//==============================================================================
 
 app.route("/")
 .get (function(req, res){
@@ -95,6 +155,14 @@ app.route("/")
   )}
 )};
 });
+
+User.find({"googleId": {$ne: null}}, function(err, foundUsers){
+      if(err) {
+        console.log(err);
+      } else {
+        console.log(foundUsers);
+        console.log("test");
+      }});
 });
 
 // About Page
@@ -104,33 +172,100 @@ app.route("/about")
   res.render("about", {});
 });
 
-// COMPOSE
+// =============================================================================
+//                               REGISTER PAGE
+// =============================================================================
+app.route("/register")
 
+  .get(function(req,res) {
+    res.render("register");
+  })
+
+  .post(function(req,res) {
+    // Middleman from passportLocalMongoose package
+    // Register information collection using local package
+     User.register({username: req.body.username}, req.body.password, function(err,user){
+       if (err) {
+         console.log(err);
+         res.redirect("/register")
+       } else {
+         passport.authenticate("local")(req,res, function() {
+           res.redirect("/");
+         });
+       }
+     });
+  });
+
+// =============================================================================
+//                                 LOGIN PAGE
+// =============================================================================
+
+app.route("/login")
+
+.get(function(req, res){
+  res.render("login");
+})
+
+.post(function(req, res){
+
+  const user = new User({
+    username: req.body.username,
+    password: req.body.password
+  });
+
+
+  passport.authenticate('google', { successRedirect: '/',
+                                                      failureRedirect: '/login' });
+
+  req.login(user, function(err){
+    if (err) {
+      console.log(err);
+    } else {
+      passport.authenticate("local")(req, res, function(){
+        res.redirect("/");
+      });
+    }
+  });
+});
+
+
+// =============================================================================
+//                                COMPOSE PAGE
+// =============================================================================
 app.route("/compose")
 .get(function(req,res) {
 
-let countrySelection = location.getCountries();
-let citySelection = location.getCities();
+  req.isAuthenticated()
 
+    let countrySelection = location.getCountries();
+    let citySelection = location.getCities();
 
-  Post.find({}, function (err, posts) {
-  res.render("compose",
-   {
-    posts:posts,
-    firstPost: firstPost,
-    countrySelection: countrySelection,
-    citySelection: citySelection,
-    randomTitle: titleGeneration.getTitle(),
-    lorem: loremGeneration,
-    date: date
+      Post.find({}, function (err, posts) {
+      res.render("compose",
+       {
+        posts:posts,
+        firstPost: firstPost,
+        countrySelection: countrySelection,
+        citySelection: citySelection,
+        randomTitle: titleGeneration.getTitle(),
+        lorem: loremGeneration,
+        date: date
 
-        });
-      });
-    })
-
+            });
+          });
+        })
+  //
+  // } else {
+  //      console.log("not authenticated");
+  //      console.log(req.body);
+  //      console.log(req.user);
+  //    }
+// })
 
 .post(function(req, res) {
 
+    console.log(req.body);
+    console.log(req.user);
       function getDate()
       {
           var today = new Date();
@@ -158,8 +293,15 @@ let citySelection = location.getCities();
            res.redirect("/");  }
        setTimeout(myFunc, 200);
        post.save(function(err){
+         console.log("Post Id is" + " " +post._id);
+         console.log("User Id is" + " " +user._id);
        });
      });
+
+
+// =============================================================================
+//                              DYNAMIC POST PAGE
+// =============================================================================
 
 app.route("/posts/:newpost")
 
@@ -184,12 +326,14 @@ app.route("/posts/:newpost")
     } else {
       console.log(err);
       console.log("error creating post page");
-    } // END ELSE
-      }); // END POSTS FOR EACH LOOP
+         }
+      });
+    });
 
-    }); // END POST FIND
+//==============================================================================
+//                              CONTACT PAGE
+//==============================================================================
 
-// CONTACT GET
 app.get("/contact", function(req,res) {
   Post.find({}, function (err, posts) {
   res.render("contact",
@@ -197,6 +341,10 @@ app.get("/contact", function(req,res) {
  });
 });
 
+//==============================================================================
+//                       SEARCH PAGE OR ROUTE HANDLING
+//                             *** TODO ***
+//==============================================================================
 app.route("/search")
 
 .get(function(req,res) {
@@ -208,7 +356,28 @@ app.route("/search")
    requestedSearch = req.body.search;
    Post.find({title:str.includesreq.body.search})
 
-})
+});
+
+//==============================================================================
+//                        HANDLE GOOGLE AUTHENTICATION
+//
+
+app.get("/auth/google",
+  passport.authenticate('google', { scope: ["profile"] })
+);
+
+
+app.get("/auth/google/posts",
+  passport.authenticate('google', { failureRedirect: "/register" }),
+  function(req, res) {
+    res.redirect("/compose");
+  });
+
+
+//==============================================================================
+//                         DB RESET FUNCTIONALITY
+//                         AUTOMATIC NIGHTLY RESET?
+//==============================================================================
 
 app.post("/resetDB", function(req, res) {
   mongoose.connect("mongodb://localhost:27017/blogDB", {
