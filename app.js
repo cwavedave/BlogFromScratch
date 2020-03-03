@@ -142,6 +142,7 @@ const loremGeneration = lorem.generateParagraphs(1);
 
 //==============================================================================
 //                               HOME PAGE
+//    Currently console logging user profile even though not from active session
 //==============================================================================
 
 app.route("/")
@@ -177,15 +178,16 @@ app.route("/")
 )};
 });
 
-User.find({"_id": {$ne: null}}, function(err, foundUsers){
-      if(err) {
-        console.error(err);
-      } else {
-        console.log(foundUsers);
-        console.log("test");
-      }});
+// This code is just showing the users who have accounts - not active sessions
+// User.find({"_id": {$ne: null}}, function(err, foundUsers){
+//       if(err) {
+//         console.error(err);
+//       } else {
+//         console.log(foundUsers);
+//         console.log("test");
+//       }});
+// });
 });
-
 // About Page
 app.route("/about")
 
@@ -204,11 +206,11 @@ app.route("/register")
 
   .post(function(req,res) {
     console.info(req.body);
-    console.info(req.body.name + " " + req.body.username + " " + req.body.password);
+    console.info(req.body.username + " " + req.body.email + " " + req.body.password );
 
     // Middleman from passportLocalMongoose package
     // Register information collection using local package
-     User.register({email: req.body.username}, req.body.password, function(err,user){
+     User.register({username:req.body.username, email: req.body.email}, req.body.password, function(err,user){
        if (err) {
          console.error(err);
          res.redirect("/register")
@@ -230,29 +232,26 @@ app.route("/login")
   res.render("login");
 })
 
+// login submit
 .post(function(req, res){
 
-  const user = new User({
-    email: req.body.username,
-    password: req.body.password
-  });
-
-
-  passport.authenticate('google', { successRedirect: '/',
-                                    failureRedirect: '/login' });
+  // const user = new User({
+  //   email: req.body.username,
+  //   password: req.body.password
+  // });
 
   req.login(user, function(err){
-    if (err) {
-      console.error(err);
-    throw err
-  } else {
-      passport.authenticate("local")(req, res, function(){
-        res.redirect("/");
-      });
-    }
+       if (err) {
+         console.error(err);
+         console.log("There was an issue at login");
+       throw err
+           } else {
+        passport.authenticate("local", "google"), {successRedirect:"/",
+                                                  failureRedirect:"/register"}
+          console.log("why");
+         }
+    })
   });
-});
-
 
 // =============================================================================
 //                                COMPOSE PAGE
@@ -377,9 +376,8 @@ app.route("/search")
 .post(function(req,res) {
     console.log(req.body.search);
    requestedSearch = req.body.search;
-   Post.find({title:str.includesreq.body.search})
-
-});
+   Post.find({title:str.includes(req.body.search)})
+ });
 
 //==============================================================================
 //                        HANDLE GOOGLE AUTHENTICATION
@@ -397,7 +395,7 @@ app.get("/auth/google/posts",
   });
 
 
-// Logout 
+// Logout
   app.get('/logout', function(req, res){
     req.logout();
     res.redirect('/');
