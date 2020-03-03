@@ -13,13 +13,12 @@ const date = require(__dirname + "/date.js");
 const titleGeneration = require(__dirname + "/titleGenerator.js");
 const passport = require("passport");
 const passportLocalMongoose = require("passport-local-mongoose");
+var session = require('express-session')
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const findOrCreate = require('mongoose-findorcreate');
 const app = express();
 
-
 import { LoremIpsum } from "lorem-ipsum";
-// const LoremIpsum = require("lorem-ipsum").LoremIpsum;
 
 // Run EJS in View Engine
 app.set('view engine', 'ejs');
@@ -27,6 +26,12 @@ app.set('view engine', 'ejs');
 // Setup bodyParser
 app.use(bodyParser.urlencoded({
   extended: true
+}));
+
+app.use(session({
+  secret: "Our little secret.",
+  resave: false,
+  saveUninitialized: false
 }));
 
 app.use(bodyParser.urlencoded({extended: true}));
@@ -41,6 +46,7 @@ var conn = mongoose.connect("mongodb://localhost:27017/blogDB", {
   useFindAndModify: false
 });
 
+// Fixes Third Party Deprecation warning
 mongoose.set("useCreateIndex", true);
 
 // =============================================================================
@@ -65,6 +71,7 @@ const userSchema = new mongoose.Schema ({
   posts: [postsSchema]
 });
 
+// Uses PassportLocalMongoose Plugin & findOr Create plugin
 userSchema.plugin(passportLocalMongoose);
 userSchema.plugin(findOrCreate);
 
@@ -86,6 +93,13 @@ passport.deserializeUser(function(id, done) {
   });
 });
 
+
+//==============================================================================
+//                        Google Login Strategy
+//                            Passport JS
+//==============================================================================
+
+
 passport.use(new GoogleStrategy({
     clientID: process.env.CLIENT_ID,
     clientSecret: process.env.CLIENT_SECRET,
@@ -102,10 +116,17 @@ passport.use(new GoogleStrategy({
   }
 ));
 
+
+//==============================================================================
+//                            Site Generation
+//                        Could be better organised
+//==============================================================================
+
+
 let firstPost = "Create a post";
 const day = date.getDate();
 
-
+// Filler Text Generation
 const lorem = new LoremIpsum({
   sentencesPerParagraph: {
     max: 8,
@@ -156,9 +177,9 @@ app.route("/")
 )};
 });
 
-User.find({"googleId": {$ne: null}}, function(err, foundUsers){
+User.find({"_id": {$ne: null}}, function(err, foundUsers){
       if(err) {
-        console.log(err);
+        console.error(err);
       } else {
         console.log(foundUsers);
         console.log("test");
@@ -182,11 +203,14 @@ app.route("/register")
   })
 
   .post(function(req,res) {
+    console.info(req.body);
+    console.info(req.body.name + " " + req.body.username + " " + req.body.password);
+
     // Middleman from passportLocalMongoose package
     // Register information collection using local package
-     User.register({username: req.body.username}, req.body.password, function(err,user){
+     User.register({email: req.body.username}, req.body.password, function(err,user){
        if (err) {
-         console.log(err);
+         console.error(err);
          res.redirect("/register")
        } else {
          passport.authenticate("local")(req,res, function() {
@@ -209,18 +233,19 @@ app.route("/login")
 .post(function(req, res){
 
   const user = new User({
-    username: req.body.username,
+    email: req.body.username,
     password: req.body.password
   });
 
 
   passport.authenticate('google', { successRedirect: '/',
-                                                      failureRedirect: '/login' });
+                                    failureRedirect: '/login' });
 
   req.login(user, function(err){
     if (err) {
-      console.log(err);
-    } else {
+      console.error(err);
+    throw err
+  } else {
       passport.authenticate("local")(req, res, function(){
         res.redirect("/");
       });
@@ -250,7 +275,6 @@ app.route("/compose")
         randomTitle: titleGeneration.getTitle(),
         lorem: loremGeneration,
         date: date
-
             });
           });
         })
@@ -264,7 +288,6 @@ app.route("/compose")
 
 .post(function(req, res) {
 
-    console.log(req.body);
     console.log(req.user);
       function getDate()
       {
@@ -294,7 +317,7 @@ app.route("/compose")
        setTimeout(myFunc, 200);
        post.save(function(err){
          console.log("Post Id is" + " " +post._id);
-         console.log("User Id is" + " " +user._id);
+         console.log("User Id is" + "tbc");
        });
      });
 
@@ -324,7 +347,7 @@ app.route("/posts/:newpost")
      });
 
     } else {
-      console.log(err);
+      console.error(err);
       console.log("error creating post page");
          }
       });
@@ -360,7 +383,7 @@ app.route("/search")
 
 //==============================================================================
 //                        HANDLE GOOGLE AUTHENTICATION
-//
+//==============================================================================
 
 app.get("/auth/google",
   passport.authenticate('google', { scope: ["profile"] })
@@ -374,9 +397,16 @@ app.get("/auth/google/posts",
   });
 
 
+// Logout 
+  app.get('/logout', function(req, res){
+    req.logout();
+    res.redirect('/');
+  });
+
+
 //==============================================================================
 //                         DB RESET FUNCTIONALITY
-//                         AUTOMATIC NIGHTLY RESET?
+//                        AUTOMATIC NIGHTLY RESET?
 //==============================================================================
 
 app.post("/resetDB", function(req, res) {
@@ -390,7 +420,6 @@ app.post("/resetDB", function(req, res) {
     res.redirect("/");  }
 setTimeout(myFunc, 1000);
 });
-
 
 app.listen(process.env.PORT || 3000, function() {
   console.log("Server started on port 3000");

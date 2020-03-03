@@ -1,9 +1,9 @@
 <%- include("partials/header") -%>
-
+<div class="bodyContainer">
 <div class="card bg-light">
 <article class="card-body mx-auto" style="max-width: 400px;">
-	<h4 class="card-title mt-3 text-center">Create Account</h4>
-	<p class="text-center">Get started with your free account</p>
+	<h4 class="card-title mt-3 text-center">Login</h4>
+	<p class="text-center">Login with your username or log in with Google</p>
 
 		<div class="col-sm-4">
       <div class="card social-block">
@@ -19,7 +19,7 @@
 	<p class="divider-text">
         <span class="bg-light">OR</span>
     </p>
-	<form>
+	<form action="/login" method="POST">
     <div class="form-group input-group">
     	<div class="input-group-prepend">
 		    <span class="input-group-text"> <i class="fa fa-envelope"></i> </span>
@@ -37,8 +37,10 @@
     <div class="form-group">
         <button type="submit" class="btn btn-primary btn-block"> Create Account  </button>
     </div> <!-- form-group// -->
-    <p class="text-center">Have an account? <a href="">Log In</a> </p>
+    <p class="text-center">Don't have an account? <a href="/register">Register</a> </p>
 </form>
 </article>
 </div> <!-- card.// -->
+
+</div>
         <%- include("partials/footer") -%>
