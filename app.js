@@ -179,15 +179,15 @@ app.route("/")
 });
 
 // This code is just showing the users who have accounts - not active sessions
-// User.find({"_id": {$ne: null}}, function(err, foundUsers){
+// User.findOne({"_id": {$ne: null}}, function(err, foundUsers){
 //       if(err) {
 //         console.error(err);
 //       } else {
-//         console.log(foundUsers);
+//         console.log(foundUsers.posts);
 //         console.log("test");
 //       }});
-// });
 });
+// });
 // About Page
 app.route("/about")
 
@@ -259,8 +259,8 @@ app.route("/login")
 app.route("/compose")
 .get(function(req,res) {
 
-  req.isAuthenticated()
-
+  req.isAuthenticated();
+  console.log(req.session);
     let countrySelection = location.getCountries();
     let citySelection = location.getCities();
 
@@ -277,6 +277,9 @@ app.route("/compose")
             });
           });
         })
+
+
+
   //
   // } else {
   //      console.log("not authenticated");
@@ -311,13 +314,29 @@ app.route("/compose")
        date: getDate()
        });
 
-       function myFunc() {
-           res.redirect("/");  }
-       setTimeout(myFunc, 200);
-       post.save(function(err){
-         console.log("Post Id is" + " " +post._id);
-         console.log("User Id is" + "tbc");
+       User.findById(req.user.id, function(err, foundUser){
+         if (err) {
+           throw err;
+           console.log(err);
+         } else {
+           if (foundUser) {
+             post.save();
+             foundUser.posts.push(post);
+             foundUser.save();
+             foundUser.save(function(){
+               res.redirect("/");
+             });
+           }
+         }
        });
+
+       // function myFunc() {
+       //     res.redirect("/");  }
+       // setTimeout(myFunc, 200);
+       // post.save(function(err){
+       //   console.log("Post Id is" + " " +post._id);
+       //   console.log("User Id is" + "tbc");
+       // });
      });
 
 
@@ -330,12 +349,10 @@ app.route("/posts/:newpost")
 .get(function(req,res) {
 
   const requestedTitle = _.lowerCase(req.params.newpost);
-  console.log(requestedTitle);
 
     Post.findOne({Title:requestedTitle}, (err, postFound) => {
     if (postFound)
     {
-      console.log("New Post Generated");
       res.render("post", {
         title: postFound.Title,
         content: postFound.Content,

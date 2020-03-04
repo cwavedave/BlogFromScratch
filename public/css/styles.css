@@ -213,6 +213,7 @@ background-position: center;
   margin: 3% 3%;
   min-height: 100vh;
   max-width: 1200px;
+  z-index: 0;
 }
 .featuredPost {
   min-width: 320px;
@@ -290,7 +291,7 @@ background-position: center;
   left: auto;
   right:auto;
   position: absolute;
-  z-index: 1;
+  z-index: 2;
 }
 
 .blogContent {
