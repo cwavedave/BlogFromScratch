@@ -35,7 +35,7 @@
 </section>
 
 
-<div id="bottomHalf">
+<div id="middleThird">
   <div class="gridContainer">
     <% posts.forEach(function(post) { %>
 
@@ -60,6 +60,29 @@
     <% }) %>
 
 </div>
+</div>
+
+<div id="space">
+
+  </div>
+
+<div id="bottomThird">
+  <header>
+     <h3>Registered users</h3>
+    </header>
+  <div class="gravContainer">
+
+      <div class="gravSnippetContainer">
+       <section class="userGravatar">
+          <img src="https://www.gravatar.com/avatar/00000000000000000000000000000000?d=retro">
+       </section>
+
+      <section class="userName">
+
+        </section>
+        </div>
+   </div>
+</div>
 
 <div class="bottomCta">
 <button method="POST" action ="/logout" type="submit" name="logout"> Logout </button>
@@ -67,5 +90,4 @@
 
 </div>
 
-</div>
 <%- include("partials/footer") -%>
