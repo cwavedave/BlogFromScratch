@@ -170,36 +170,50 @@ app.route("/")
        let firstPost = "";
        Post.find().sort('-date').limit(1).find(function(err, latestPost) {
          latestPost.forEach(function(featurePost){
-       res.render("home", {
+         res.render("home", {
          posts: posts,
          countrySelection: countrySelection,
          citySelection: citySelection,
-         featurePost: featurePost
+         featurePost: featurePost,
+         // users: userList()
        });
      }
   )}
 )};
 });
 
-// This code is just showing the users who have accounts - not active sessions
-// User.find({"_id": {$ne: null}}, function(err, foundUsers){
-//       if(err) {
-//         console.error(err);
-//       } else {
-//         // foundUsers.forEach(function(user) {
-//         //   console.log(user.posts);
-//         // })
-User.find({})
-        .populate({path:'posts'})
-        .exec(function(err, foundUsers) {
-          console.log(foundUsers);
-        // foundUsers.forEach(function(user){
-        //   console.log(user);
-        // })
-      });
-
+// function userList() {
+// User.find({}, function(err, users) {
+//   var i;
+//   var usernames = [];
+//   var posts = []
+//
+//   if (!err) {
+//     for (i = 0; i < users.length; i++ ){
+//       usernames.push(users[i].username);
+//       usernames.push(users[i].posts);
+//     }
+//   }
+//
+// return usernames
+//
+// // console.log(usernames);
+// // console.log(posts);
+// });
+// }
+//
+// console.log(userList());
 
 });
+
+// User.find({})
+//         .populate({path:'posts'})
+//         .exec(function(err, foundUsers) {
+//           console.log(foundUsers);
+//         // foundUsers.forEach(function(user){
+//         //   console.log(user);
+//         // })
+
 // });
 // About Page
 app.route("/about")

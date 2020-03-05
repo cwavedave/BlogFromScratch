@@ -270,7 +270,7 @@ background-position: center;
 
 .gravContainer {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   grid-template-rows:    1fr;
   grid-column-gap: 10px;
   grid-row-gap: 20px;
@@ -439,9 +439,18 @@ background-position: center;
   }
 
 .bottomThird {
-  margin-top: 45px!important;
-  padding: 45px;
+  background: whitesmoke!important;
+  padding: 15px;
 
+}
+
+.gravatar {
+  float:left;
+  padding: 15px;
+}
+
+.userName {
+  padding: 15px;
 }
 
 .bottomCta {
