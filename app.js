@@ -16,6 +16,8 @@ const passportLocalMongoose = require("passport-local-mongoose");
 var session = require('express-session')
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const findOrCreate = require('mongoose-findorcreate');
+var async = require('async');
+
 const app = express();
 
 import { LoremIpsum } from "lorem-ipsum";
@@ -29,7 +31,7 @@ app.use(bodyParser.urlencoded({
 }));
 
 app.use(session({
-  secret: "Our little secret.",
+  secret: "SecretState",
   resave: false,
   saveUninitialized: false
 }));
@@ -54,11 +56,12 @@ mongoose.set("useCreateIndex", true);
 // =============================================================================
 
 const postsSchema = new mongoose.Schema ({
-  Title: String,
-  Content: String,
-  Category: String,
+  title: String,
+  content: String,
+  category: String,
   emojiLocation: String,
-  date: String
+  date: String,
+  author: String
 });
 
 // Posts Model
@@ -68,7 +71,7 @@ const userSchema = new mongoose.Schema ({
   email : String,
   password : String,
   googleId: String,
-  posts: [postsSchema]
+  posts: Array,
 });
 
 // Uses PassportLocalMongoose Plugin & findOr Create plugin
@@ -179,13 +182,23 @@ app.route("/")
 });
 
 // This code is just showing the users who have accounts - not active sessions
-// User.findOne({"_id": {$ne: null}}, function(err, foundUsers){
+// User.find({"_id": {$ne: null}}, function(err, foundUsers){
 //       if(err) {
 //         console.error(err);
 //       } else {
-//         console.log(foundUsers.posts);
-//         console.log("test");
-//       }});
+//         // foundUsers.forEach(function(user) {
+//         //   console.log(user.posts);
+//         // })
+User.find({})
+        .populate({path:'posts'})
+        .exec(function(err, foundUsers) {
+          console.log(foundUsers);
+        // foundUsers.forEach(function(user){
+        //   console.log(user);
+        // })
+      });
+
+
 });
 // });
 // About Page
@@ -278,16 +291,6 @@ app.route("/compose")
           });
         })
 
-
-
-  //
-  // } else {
-  //      console.log("not authenticated");
-  //      console.log(req.body);
-  //      console.log(req.user);
-  //    }
-// })
-
 .post(function(req, res) {
 
     console.log(req.user);
@@ -307,9 +310,9 @@ app.route("/compose")
       }
 
        const post = new Post ({
-       Title: _.capitalize(req.body.title),
-       Content: req.body.content,
-       Category: req.body.category,
+       title: _.capitalize(req.body.title),
+       content: req.body.content,
+       category: req.body.category,
        emojiLocation: req.body.Country,
        date: getDate()
        });
@@ -321,7 +324,9 @@ app.route("/compose")
          } else {
            if (foundUser) {
              post.save();
-             foundUser.posts.push(post);
+             console.log(post._id);
+             console.log(foundUser);
+             foundUser.posts.push(post._id);
              foundUser.save();
              foundUser.save(function(){
                res.redirect("/");
@@ -350,13 +355,13 @@ app.route("/posts/:newpost")
 
   const requestedTitle = _.lowerCase(req.params.newpost);
 
-    Post.findOne({Title:requestedTitle}, (err, postFound) => {
+    Post.findOne({title:requestedTitle}, (err, postFound) => {
     if (postFound)
     {
       res.render("post", {
-        title: postFound.Title,
-        content: postFound.Content,
-        category: postFound.Category,
+        title: postFound.title,
+        content: postFound.content,
+        category: postFound.category,
         posts: postFound,
         emojiLocation: postFound.emoji,
         date: postFound.date

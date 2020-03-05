@@ -10,13 +10,13 @@
    <div class="featuredPost">
      <section class="featureImageContainer">
 
-    <img id="featureImage" src="https://source.unsplash.com/1366x768/?<%=featurePost.Title.split(" ").splice(-3)%>" alt="">
+    <img id="featureImage" src="https://source.unsplash.com/1366x768/?<%=featurePost.title.split(" ").splice(-3)%>" alt="">
   </section>
 
      <section id="featuredTitle">
-       <h2><%=featurePost.Title.toUpperCase()%></h2>
+       <h2><%=featurePost.title.toUpperCase()%></h2>
        <p id="featureContent">
-       <%=featurePost.Content.substring(0, 250)%>... <a href="/posts/<%=featurePost.Title.split(' ').join('_')%>"> Read more </a>
+       <%=featurePost.content.substring(0, 250)%>... <a href="/posts/<%=featurePost.title.split(' ').join('_')%>"> Read more </a>
          </p>
          <p id="featuredDate">
           <%= featurePost.date %>
@@ -43,14 +43,14 @@
 
        <section class="imageContainer">
          <span class="spanLocation"><%= post.emojiLocation%></span>
-          <a href="/posts/<%=post.Title.split(' ').join('_')%>"><img class="imageImported" src="https://source.unsplash.com/750x400/?<%=post.Title.split(" ").splice(-3)%>" alt=""> </a>
+          <a href="/posts/<%=post.title.split(' ').join('_')%>"><img class="imageImported" src="https://source.unsplash.com/750x400/?<%=post.title.split(" ").splice(-3)%>" alt=""> </a>
        </section>
 
       <section class="blogSnippetTitle">
-        <h3> <%= post.Title%> </h3></section>
+        <h3> <%= post.title%> </h3></section>
        <section class="blogSnippetContent">
-         <p><%= post.Content.substring(0, 100)%> </p>
-         <a href="/posts/<%=post.Title.split(' ').join('_')%>">Read More</a>
+         <p><%= post.content.substring(0, 100)%> </p>
+         <a href="/posts/<%=post.title.split(' ').join('_')%>">Read More</a>
          <p>
          Published: <%= post.date %>
            </p>
@@ -61,7 +61,11 @@
 
 </div>
 
-
+<div class="bottomCta">
 <button method="POST" action ="/logout" type="submit" name="logout"> Logout </button>
+</div>
 
+</div>
+
+</div>
 <%- include("partials/footer") -%>

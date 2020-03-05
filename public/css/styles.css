@@ -139,7 +139,7 @@ background-position: center;
   top:0;
   right: 3%;
   left: 0;
-  border: thick inset lightgrey;
+  border: medium groove whitesmoke;
   border-top: none;
 }
 
@@ -303,7 +303,7 @@ background-position: center;
   box-shadow: -1px 5px 68px 2px rgba(181,181,181,0.6);
   z-index: 4;
   min-height: 50vh;
-  max-height: 75vh;
+  max-height: 80%;
   width: 87%;
   position: fixed;
   top:20%;
@@ -418,4 +418,14 @@ background-position: center;
 .footer-padding {
   margin-top: 45px;
   padding-top: 45px;
+}
+
+.bottomCta {
+  text-align: center;
+  margin-top: 75px;
+  padding: 25px;
+  margin-bottom: 0;
+  background-color:lightgrey;
+  border: thin solid lightgrey;
+  border-radius: 3px;
 }
