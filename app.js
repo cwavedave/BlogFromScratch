@@ -154,65 +154,55 @@ app.route("/")
   let countrySelection = location.getCountries();
   let citySelection = location.getCities();
 
- Post.find({}, function(err, posts) {
-   if (posts.length === 0)
-   {
-     firstPost = "Create your First Post";
-     res.render("compose", {
-       firstPost: firstPost,
-       countrySelection: countrySelection,
-       citySelection: citySelection,
-       randomTitle: titleGeneration.getTitle().split('_').join(' '),
-       lorem: loremGeneration,
-       date: date,})
-   }
-     else {
-       let firstPost = "";
-       Post.find().sort('-date').limit(1).find(function(err, latestPost) {
-         latestPost.forEach(function(featurePost){
-         res.render("home", {
-         posts: posts,
-         countrySelection: countrySelection,
-         citySelection: citySelection,
-         featurePost: featurePost,
-         // users: userList()
-       });
-     }
-  )}
-)};
-});
+User.find({}, function(err, users){
 
-// function userList() {
-// User.find({}, function(err, users) {
-//   var i;
-//   var usernames = [];
-//   var posts = []
-//
-//   if (!err) {
-//     for (i = 0; i < users.length; i++ ){
-//       usernames.push(users[i].username);
-//       usernames.push(users[i].posts);
-//     }
-//   }
-//
-// return usernames
-//
-// // console.log(usernames);
-// // console.log(posts);
-// });
-// }
-//
-// console.log(userList());
+  console.log(users);
+  console.log(users.length);
+  if (users.length === 0) {
+    res.render("register", {
+      firstPost: firstPost,
+      countrySelection: countrySelection,
+      citySelection: citySelection,
+      randomTitle: titleGeneration.getTitle().split('_').join(' '),
+      lorem: loremGeneration,
+      date: date
+    });
 
-});
+  } else {
 
-// User.find({})
-//         .populate({path:'posts'})
-//         .exec(function(err, foundUsers) {
-//           console.log(foundUsers);
-//         // foundUsers.forEach(function(user){
-//         //   console.log(user);
-//         // })
+      Post.find({}, function(err,posts) {
+        console.log(err);
+          if (posts.length === 0) {
+             firstPost = "Create the First Post!";
+          } else {
+            posts.forEach(function(post) {
+
+                Post.findOne().sort('-date').limit(1).find(function(err, featurePost) {
+                  console.log(err);
+                  console.log("This is featurePost");
+                  console.log(featurePost[0]);
+                  console.log(users);
+
+                    res.render("home",
+                    {
+                    posts: posts,
+                    countrySelection: countrySelection,
+                    citySelection: citySelection,
+                    featurePost: featurePost[0],
+                    users: users
+                  }
+                ) // end render home
+
+                  }) //end post find featured
+                }) // end for each
+
+              } // end else Post.find
+
+            }) // end post.find posts
+          } // end else
+        }) // end User find route
+      }) // end get "/" route
+
 
 // });
 // About Page

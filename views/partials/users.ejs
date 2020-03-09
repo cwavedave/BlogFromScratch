@@ -5,7 +5,7 @@
 <div class="bottomThird">
   <div class="gravContainer">
 
-
+    <% users.forEach(function(user) { %>
 
       <div class="gravSnippetContainer">
        <section class="userGravatar">
@@ -13,14 +13,16 @@
        </section>
 
       <section class="userName">
-         <h6>username: example</h6>
+         <h6>username: <%=user.username%></h6>
          <p>
-           number of posts: 3
+           number of posts: <%=user.posts.length %>
            <br>
             <a href="/">view posts here</a>
              </p>
         </section>
         </div>
+        <% }) %>
+
    </div>
 
 
