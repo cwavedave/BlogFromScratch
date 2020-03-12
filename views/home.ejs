@@ -5,16 +5,15 @@
 </head>
 
 <body>
-  <div class="bodyContainer">
-
    <div class="featuredPost">
      <section class="featureImageContainer">
-
     <img id="featureImage" src="https://source.unsplash.com/1366x768/?<%=featurePost.title.split(" ").splice(-3)%>" alt="">
+    <section id="featureTitleContainer">
+    <h2 id="featureTitle"><%=featurePost.title.toUpperCase()%></h2>
+   </section>
   </section>
 
      <section id="featuredTitle">
-       <h2><%=featurePost.title.toUpperCase()%></h2>
        <p id="featureContent">
        <%=featurePost.content.substring(0, 250)%>... <a href="/posts/<%=featurePost.title.split(' ').join('_')%>"> Read more </a>
          </p>
@@ -23,13 +22,13 @@
            </p>
      </section>
    </div>
-
+   <div class="bodyContainer">
 <section id="searchBarSection">
 
    <h2> Search </h2>
    <form class="" action="/search" method="post">
 
-   <input id="searchBar" type="text" name="search" placeholder="Search.." autofocus />
+   <input id="searchBar" type="text" name="search" placeholder="Search.."  />
 
 </form>
 </section>
@@ -70,11 +69,8 @@
   <%- include("partials/users.ejs") -%>
 
 
-
 <div class="bottomCta">
 <button method="POST" action ="/logout" type="submit" name="logout"> Logout </button>
 </div>
 
 </div>
-
-<%- include("partials/footer") -%>

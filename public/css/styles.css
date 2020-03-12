@@ -14,11 +14,23 @@ body {
 
 .navbar {
   padding: 15px 3%!important;
+  background: transparent!important;
+  margin-bottom: -70px;
+  z-index: 9999;
 }
 
-h3 {
-  font-size:1.25rem!important;
-  color: rgb(80,80,80)!important;
+.navbar a{
+  color:white;
+  text-shadow: 1px 1px rgb(40,40,40,0.5);
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.navbar a:hover{
+  color: snow;
+  text-shadow: 2px 2px rgb(40,40,40,0.5);
+  border-bottom: thin solid white;
+  border-width: 75%;
 }
 
 body.loaded {
@@ -45,8 +57,8 @@ body.loaded {
   padding: 5px;
   text-decoration: none;
   color: snow;
-  text-shadow: 1px 1px 3px rgb(0,0,0,0.5);
   border-radius: 5px;
+  text-shadow: 2px 2px rgb(40,40,40,0.5);
 }
 
 .CTABlog:hover  {
@@ -83,15 +95,34 @@ body.loaded {
 
 
 #featureImage {
-  min-height:300px;
   margin: 0;
   width: 100%;
-  max-width: 1200px;
   position: relative;
   background-size: cover!important;
   z-index: 2!important;
   min-height: 576px;
   max-height: 650px;
+}
+
+#featureTitleContainer {
+  padding: 15px;
+  text-align: center;
+  background-image: linear-gradient(to top, rgb(0,0,0), rgb(20,20,20,0.7), rgb(180,180,180,0.3), rgb(255,255,255,0));  margin: auto;
+  position: absolute;
+  color:white;
+  top: 0; left: 0; bottom: 0; right: 0;
+  z-index: 3;
+}
+
+#featureTitle {
+  position: absolute;
+  bottom: 5%;
+  left: 50px;
+  right: 50px;
+  text-align: center;
+  margin: auto;
+  font-size: 3.5vw;
+  width: 75%;
 }
 
 .imageContainer {
@@ -121,10 +152,10 @@ background-position: center;
 
 @media only screen and (max-width: 980px) {
   #featureImage {
-    min-height: 150px;
+    min-height: 250px;
   }
   .featureImageContainer {
-    min-height:150px;
+    min-height:250px;
   }
 }
 
@@ -139,7 +170,7 @@ background-position: center;
   top:0;
   right: 3%;
   left: 0;
-  border: medium groove whitesmoke;
+  border: thick inset lightgrey;
   border-top: none;
 }
 
@@ -192,39 +223,34 @@ background-position: center;
   text-decoration: underline;
   margin: 0; }
 
+  #searchBar {
+    width: 100%;
+  }
 
-/* Search Section */
-
-#searchBar {
-  width: 100%;
-}
-
-#searchBarSection
-{
-  width: 400px;
-  margin: 0 auto;
-  padding: 45px 0 75px 0;
-  text-align: center;
-}
+  #searchBarSection
+  {
+    width: 400px;
+    margin: 0 auto;
+    padding: 45px 0 75px 0;
+    text-align: center;
+  }
 
 .bodyContainer {
-  background: white;
-  padding: 3%;
   margin: 3% 3%;
   min-height: 100vh;
   max-width: 1200px;
-  z-index: 0;
 }
 .featuredPost {
   min-width: 320px;
   width: 100%;
   max-width: 100%;
-  height: 100%;
   margin-bottom: 25px;
   background-repeat: no-repeat;
   position: relative;
   background-size: cover;
   background-position: center;
+  height:100vh;
+  background: black;
 }
 
 .featuredImage {
@@ -234,19 +260,10 @@ background-position: center;
 }
 
 #featuredTitle {
-  position: absolute;
-  bottom:0;
   color:white;
   padding: 15px;
-  background-color: rgb(0,0,0,.8);
-  width:100%;
+  background: black;
   text-align: center;
-}
-
-#featuredTitle h2{
-  font-size:2.5vw;
-  max-width: 750px;
-  margin:auto;
 }
 
 .gridContainer {
@@ -259,14 +276,17 @@ background-position: center;
 
 .blogSnippetContainer {
   width: inherit;
-  background-color: white;
   border: thin solid lightgrey;
   position: relative;
   -webkit-box-shadow: -1px 0px 68px 2px rgba(181,181,181,0.42);
   -moz-box-shadow: -1px 0px 68px 2px rgba(181,181,181,0.42);
   box-shadow: -1px 0px 68px 2px rgba(181,181,181,0.42);
+  border: medium transparent solid!important;
 }
 
+.blogSnippetContainer:hover {
+  box-shadow: -1px 0px 28px 2px rgba(40,40,40,0.32);
+}
 
 .gravContainer {
   display: grid;
@@ -285,8 +305,6 @@ background-position: center;
   -moz-box-shadow: -1px 0px 68px 2px rgba(181,181,181,0.42);
   box-shadow: -1px 0px 68px 2px rgba(181,181,181,0.42);
 }
-
-
 
 .heroBlog {
   margin: 0 auto;
@@ -310,7 +328,7 @@ background-position: center;
   left: auto;
   right:auto;
   position: absolute;
-  z-index: 2;
+  z-index: 1;
 }
 
 .blogContent {
@@ -322,7 +340,7 @@ background-position: center;
   box-shadow: -1px 5px 68px 2px rgba(181,181,181,0.6);
   z-index: 4;
   min-height: 50vh;
-  max-height: 80%;
+  max-height: 75vh;
   width: 87%;
   position: fixed;
   top:20%;
@@ -388,11 +406,16 @@ background-position: center;
 }
 
 .blogSnippetTitle {
-  background: rgb(230,230,230);
-  background: linear-gradient(0deg, rgba(230,230,230,1) 0%, rgba(247,247,247,1) 50%, rgba(252,252,252,1) 100%);
+  /* background: rgb(230,230,230);
+  background: linear-gradient(0deg, rgba(230,230,230,1) 0%, rgba(247,247,247,1) 50%, rgba(252,252,252,1) 100%); */
+  background: tomato;
   padding: 15px;
-  color: grey;
+  color: white;
   text-transform: capitalize;
+}
+
+.blogSnippetHeader {
+font-size: min(max(16px, 4vw), 22px);
 }
 
 .blogSnippetContent {
@@ -410,21 +433,12 @@ background-position: center;
     position: fixed;
     top:15%;
   }
-  #featuredTitle h2 {
-    font-size:1rem!important;
-  }
-  .blogSnippetTitle{
-    font-size:1rem!important;
-  }
 }
 
 
 @media only screen and (min-width: 1260px) {
   .bodyContainer {
     margin: 2.5% auto;
-  }
-  #featuredTitle h2{
-    font-size:1.5rem;
   }
 }
 
@@ -462,7 +476,6 @@ background-position: center;
   border: thin solid lightgrey;
   border-radius: 3px;
 }
-
 
 .footer-padding {
   margin-top: 45px;
