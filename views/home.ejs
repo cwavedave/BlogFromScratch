@@ -14,15 +14,23 @@
   </section>
 
      <section id="featuredTitle">
-       <p id="featureContent">
-       <%=featurePost.content.substring(0, 250)%>... <a href="/posts/<%=featurePost.title.split(' ').join('_')%>"> Read more </a>
+       <div id="featureContent">
+
+       <p>
+       "<i><%=featurePost.content.substring(0, 350)%></i>"<br> <a href="/posts/<%=featurePost.title.split(' ').join('_')%>"> Read more </a>
          </p>
          <p id="featuredDate">
           <%= featurePost.date %>
            </p>
+           </div>
+     </section>
+    <section class="arrow"
+       <a href="#section2">>
+       <i id="arrow" class="fas fa-arrow-circle-down"></i></a>
      </section>
    </div>
-   <div class="bodyContainer">
+
+   <div id="section2" class="bodyContainer">
 <section id="searchBarSection">
 
    <h2> Search </h2>
