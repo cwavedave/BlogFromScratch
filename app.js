@@ -17,6 +17,7 @@ var session = require('express-session')
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const findOrCreate = require('mongoose-findorcreate');
 var async = require('async');
+var flash = require('connect-flash');
 
 const app = express();
 
@@ -36,10 +37,12 @@ app.use(session({
   saveUninitialized: false
 }));
 
+
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static("public"));
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(flash());
 
 // Set Database Access Port
 var conn = mongoose.connect("mongodb://localhost:27017/blogDB", {
@@ -61,7 +64,7 @@ const postsSchema = new mongoose.Schema ({
   category: String,
   emojiLocation: String,
   date: String,
-  author: String
+  author: 
 });
 
 // Posts Model
@@ -155,9 +158,6 @@ app.route("/")
   let citySelection = location.getCities();
 
 User.find({}, function(err, users){
-
-  console.log(users);
-  console.log(users.length);
   if (users.length === 0) {
     res.render("register", {
       firstPost: firstPost,
@@ -222,9 +222,6 @@ app.route("/register")
   })
 
   .post(function(req,res) {
-    console.info(req.body);
-    console.info(req.body.username + " " + req.body.email + " " + req.body.password );
-
     // Middleman from passportLocalMongoose package
     // Register information collection using local package
      User.register({username:req.body.username, email: req.body.email}, req.body.password, function(err,user){
@@ -249,27 +246,12 @@ app.route("/login")
   res.render("login");
 })
 
-// login submit
-.post(function(req, res){
-
-  // const user = new User({
-  //   email: req.body.username,
-  //   password: req.body.password
-  // });
-
-  req.login(user, function(err){
-       if (err) {
-         console.error(err);
-         console.log("There was an issue at login");
-       throw err
-           } else {
-        passport.authenticate("local", "google"), {successRedirect:"/",
-                                                  failureRedirect:"/register"}
-          console.log("why");
-         }
-    })
-  });
-
+// // login submit
+// .post('/login',
+//   passport.authenticate('local', { successRedirect: '/',
+//                                    failureRedirect: '/login',
+//                                    failureFlash: true })
+// );
 // =============================================================================
 //                                COMPOSE PAGE
 // =============================================================================
