@@ -235,6 +235,7 @@ body.loaded {
   padding: 15px;
   min-height: 5vh;
   max-height: 10vh;
+  background: black;
 }
 
   #arrow {
@@ -257,8 +258,7 @@ body.loaded {
   #searchBarSection
   {
     width: 400px;
-    margin: 0 auto;
-    padding: 45px 0 75px 0;
+    margin: 45px auto;
     text-align: center;
   }
 
@@ -267,6 +267,37 @@ body.loaded {
   min-height: 100vh;
   max-width: 1200px;
 }
+
+.topReg {
+  padding: 25px;
+}
+
+.card {
+    background-color: transparent!important;
+    border: none!important;
+    width: 450px!important;
+    margin: auto;
+    border-radius: 7px;
+}
+
+.bg-light {
+  margin-top: 100px!important;
+}
+
+.googleLogin {
+  width: 100%;
+  background: tomato;
+  color:white;
+  margin: 25px;
+  padding: 25px;
+  border-radius: 7px;
+}
+
+.googleLogin:hover {
+  color: whitesmoke;
+}
+}
+
 .featuredPost {
   min-width: 320px;
   width: 100%;
@@ -377,7 +408,6 @@ body.loaded {
   margin-left: auto;
   margin-right: auto;
   overflow: auto;
-
 }
 
 .formSubmit {
@@ -475,9 +505,11 @@ font-size: min(max(16px, 4vw), 22px);
   border-bottom: thin solid lightgrey;
 }
 
-#space {
-  padding: 25px;
-  }
+#middleThird {
+  margin: 85px 0;
+  background: white;
+  padding: 15px;
+}
 
 .bottomThird {
   background: whitesmoke!important;
@@ -499,8 +531,6 @@ font-size: min(max(16px, 4vw), 22px);
   margin-top: 75px;
   padding: 25px;
   margin-bottom: 0;
-  background-color:lightgrey;
-  border: thin solid lightgrey;
   border-radius: 3px;
 }
 

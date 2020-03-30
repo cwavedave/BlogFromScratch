@@ -17,7 +17,6 @@ var session = require('express-session')
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const findOrCreate = require('mongoose-findorcreate');
 var async = require('async');
-var flash = require('connect-flash');
 
 const app = express();
 
@@ -42,7 +41,6 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static("public"));
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(flash());
 
 // Set Database Access Port
 var conn = mongoose.connect("mongodb://localhost:27017/blogDB", {
@@ -64,7 +62,6 @@ const postsSchema = new mongoose.Schema ({
   category: String,
   emojiLocation: String,
   date: String,
-  author: 
 });
 
 // Posts Model
@@ -157,7 +154,9 @@ app.route("/")
   let countrySelection = location.getCountries();
   let citySelection = location.getCities();
 
+// Get Users
 User.find({}, function(err, users){
+  // If No Users found - render Register Page
   if (users.length === 0) {
     res.render("register", {
       firstPost: firstPost,
@@ -169,19 +168,19 @@ User.find({}, function(err, users){
     });
 
   } else {
-
+    // find posts
       Post.find({}, function(err,posts) {
         console.log(err);
+          // if no posts found - Redirect to new post page
           if (posts.length === 0) {
              firstPost = "Create the First Post!";
-          } else {
-            posts.forEach(function(post) {
+             res.redirect("/compose")
+          }
 
+          else {
+             // Find Featured Post
                 Post.findOne().sort('-date').limit(1).find(function(err, featurePost) {
                   console.log(err);
-                  console.log("This is featurePost");
-                  console.log(featurePost[0]);
-                  console.log(users);
 
                     res.render("home",
                     {
@@ -194,7 +193,6 @@ User.find({}, function(err, users){
                 ) // end render home
 
                   }) //end post find featured
-                }) // end for each
 
               } // end else Post.find
 
@@ -320,14 +318,6 @@ app.route("/compose")
            }
          }
        });
-
-       // function myFunc() {
-       //     res.redirect("/");  }
-       // setTimeout(myFunc, 200);
-       // post.save(function(err){
-       //   console.log("Post Id is" + " " +post._id);
-       //   console.log("User Id is" + "tbc");
-       // });
      });
 
 
