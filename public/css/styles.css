@@ -123,8 +123,9 @@ body.loaded {
   right: 50px;
   text-align: center;
   margin: auto;
-  font-size: 3.5vw;
+  font-size: 2rem;
   width: 75%;
+  max-width: 700px;
 }
 
 .imageContainer {
@@ -165,15 +166,15 @@ body.loaded {
   margin: 0;
   width: 100%;
   max-width: 100%;
-  max-height: 40vh;
+  max-height: 50vh;
   position: relative;
   background-size: cover;
   z-index: -1!important;
-  top:0;
   right: 3%;
   left: 0;
-  border: thick inset lightgrey;
+  border: thick inset white;
   border-top: none;
+  background: grey;
 }
 
 .loaded .heroBlog .imageImportedLarge {
@@ -223,6 +224,7 @@ body.loaded {
   color: lightgrey;
   min-height: 20vh;
   max-height: 40vh;
+  max-width: 700px;
   }
 
 #featuredDate {
@@ -281,7 +283,9 @@ body.loaded {
 }
 
 .bg-light {
-  margin-top: 100px!important;
+  background: white;
+  padding: 3%;
+  margin-top: 75px!important;
 }
 
 .googleLogin {
