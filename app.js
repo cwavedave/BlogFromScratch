@@ -103,21 +103,22 @@ passport.deserializeUser(function(id, done) {
 //==============================================================================
 
 
-passport.use(new GoogleStrategy({
-    clientID: process.env.CLIENT_ID,
-    clientSecret: process.env.CLIENT_SECRET,
-    callbackURL: "http://localhost:3000/auth/google/posts",
-    userProfileURL: "https://www.googleapis.com/oauth2/v3/userinfo"
-  },
-  function(accessToken, refreshToken, profile, cb) {
-    console.log(profile);
 
-    User.findOrCreate({ googleId: profile.id, name: profile.name.givenName }, function (err, user) {
-      return cb(err, user);
-      console.log(req.user);
-    });
-  }
+
+passport.use(new GoogleStrategy({
+  clientID: process.env.CLIENT_ID,
+  clientSecret: process.env.CLIENT_SECRET,
+  callbackURL: "http://www.example.com/auth/google/blog",
+  userProfileURL: "https://www.googleapis.com/oauth2/v3/userinfo"
+},
+function(accessToken, refreshToken, profile, cb) {
+  User.findOrCreate({ googleId: profile.id, name: profile.name.givenName }, function (err, user) {
+    return cb(err, user);
+    console.log(req.user);
+  });
+}
 ));
+
 
 
 //==============================================================================
@@ -244,12 +245,15 @@ app.route("/login")
   res.render("login");
 })
 
-// // login submit
-// .post('/login',
-//   passport.authenticate('local', { successRedirect: '/',
-//                                    failureRedirect: '/login',
-//                                    failureFlash: true })
-// );
+app.get('/auth/google',
+  passport.authenticate('google', { scope: ['profile'] }));
+
+app.get('/auth/google/callback', 
+  passport.authenticate('google', { failureRedirect: '/login' }),
+  function(req, res) {
+    // Successful authentication, redirect home.
+    res.redirect('/');
+  });
 // =============================================================================
 //                                COMPOSE PAGE
 // =============================================================================

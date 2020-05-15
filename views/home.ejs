@@ -4,6 +4,9 @@
 <title>Blogs </title>
 </head>
 
+<title>Blogs </title>
+</head>
+
 <body>
    <div class="featuredPost">
      <section class="featureImageContainer">
@@ -46,14 +49,11 @@
 <div id="middleThird">
   <div class="gridContainer">
     <% posts.forEach(function(post) { %>
-
      <div class="blogSnippetContainer">
-
        <section class="imageContainer">
          <span class="spanLocation"><%= post.emojiLocation%></span>
           <a href="/posts/<%=post.title.split(' ').join('_')%>"><img class="imageImported" src="https://source.unsplash.com/750x400/?<%=post.title.split(" ").splice(-3)%>" alt=""> </a>
        </section>
-
       <section class="blogSnippetTitle">
         <h3> <%= post.title%> </h3></section>
        <section class="blogSnippetContent">
@@ -64,7 +64,6 @@
            <br>
          <strong>Published:</strong> <%= post.date %>
      </section>
-
 </div>
     <% }) %>
 
@@ -81,3 +80,6 @@
 </div>
 
 </div>
+
+
+<%- include("partials/footer") -%>

@@ -1,19 +1,33 @@
-<%- include("partials/header") -%>
+<%- include('partials/blogheader.ejs') %>
+<div class="container mt-5">
+  <h1>Register</h1>
 
+  <div class="row">
+    <div class="col-sm-8">
+      <div class="card">
+        <div class="card-body">
 
-<div class="bodyContainer">
+          <!-- Makes POST request to /register route -->
+          <form action="/register" method="POST">
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input type="email" class="form-control" name="username">
+            </div>
+            <div class="form-group">
+              <label for="password">Password</label>
+              <input type="password" class="form-control" name="password">
+            </div>
+            <button type="submit" class="btn btn-dark">Register</button>
+          </form>
 
-<div class="card bg-light">
+        </div>
+      </div>
+    </div>
 
-
-<article class="card-body mx-auto" style="max-width: 400px;">
-	<h4 class="card-title mt-3 text-center">Create Account</h4>
-	<p class="text-center">Get started with your free account</p>
-
-		<div class="col-sm-12 topReg">
+    <div class="col-sm-4">
       <div class="card social-block">
         <div class="card-body">
-          <a class="googleLogin" href="/auth/google" role="button">
+          <a class="btn btn-block" href="/auth/google" role="button">
             <i class="fab fa-google"></i>
             Sign Up with Google
           </a>
@@ -21,37 +35,7 @@
       </div>
     </div>
 
-	<p class="divider-text">
-        <span class="bg-light">OR</span>
-    </p>
-	<form action="/register" method="POST">
-	<div class="form-group input-group">
-		<div class="input-group-prepend">
-		    <span class="input-group-text"> <i class="fa fa-user"></i> </span>
-		 </div>
-        <input name="username" class="form-control" placeholder="First name" name="name" type="text">
-    </div> <!-- form-group// -->
-    <div class="form-group input-group">
-    	<div class="input-group-prepend">
-		    <span class="input-group-text"> <i class="fa fa-envelope"></i> </span>
-		 </div>
-        <input name="email" class="form-control" placeholder="Email address" type="email">
-    </div> <!-- form-group// -->
-
-    <div class="form-group input-group">
-    	<div class="input-group-prepend">
-		    <span class="input-group-text"> <i class="fa fa-lock"></i> </span>
-		</div>
-        <input name="password" class="form-control" placeholder="Create password" type="password">
-    </div> <!-- form-group// -->
-
-    <div class="form-group">
-        <button type="submit" class="btn btn-primary btn-block"> Create Account  </button>
-    </div> <!-- form-group// -->
-    <p class="text-center">Have an account? <a href="/login">Log In</a> </p>
-</form>
-</article>
-</div> <!-- card.// -->
+  </div>
 </div>
 
-<%- include("partials/footer") -%>
+<%- include('partials/footer.ejs') %>

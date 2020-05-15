@@ -12,7 +12,7 @@ exports.getTitle = function() {
     'of the WORST ways to',
     'Creative ways to',
     'Tips for busy people who want to',
-    'No Nonsense ways to',
+    'No-Nonsense ways to',
     'FoolProof ways to',
     'Epic formulas to',
     'Handy Tips to',
@@ -58,8 +58,7 @@ exports.getTitle = function() {
     'talk your wife into buying a motorbike with the kids college savings',
     'stop chewing so loud',
     'write catchy blog titles',
-    'learn to code by making clickbait blog titles',
-    'hint about getting a raise with your boss'
+    'learn to code by making clickbait blog titles'
   ]
 
 
