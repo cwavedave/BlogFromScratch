@@ -14,7 +14,7 @@
     "esm": "^3.2.25",
     "express": "^4.17.1",
     "express-session": "^1.17.0",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.19",
     "lorem-ipsum": "^2.0.3",
     "mongoose": "^5.8.9",
     "mongoose-auto-increment": "^5.0.1",
