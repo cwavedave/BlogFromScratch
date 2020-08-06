@@ -36,11 +36,18 @@ app.use(session({
   saveUninitialized: false
 }));
 
-
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static("public"));
 app.use(passport.initialize());
 app.use(passport.session());
+
+function loggedIn(req, res, next) {
+    if (req.user) {
+        next();
+    } else {
+        res.redirect('/register');
+    }
+}
 
 // Set Database Access Port
 var conn = mongoose.connect("mongodb://localhost:27017/blogDB", {
@@ -106,15 +113,15 @@ passport.deserializeUser(function(id, done) {
 passport.use(new GoogleStrategy({
     clientID: process.env.CLIENT_ID,
     clientSecret: process.env.CLIENT_SECRET,
-    callbackURL: "http://localhost:3000/auth/google/posts",
+    callbackURL: "http://localhost:4000/auth/google/posts",
     userProfileURL: "https://www.googleapis.com/oauth2/v3/userinfo"
   },
   function(accessToken, refreshToken, profile, cb) {
-    console.log(profile);
+    console.log("profile = " + profile);
 
     User.findOrCreate({ googleId: profile.id, name: profile.name.givenName }, function (err, user) {
       return cb(err, user);
-      console.log(req.user);
+      console.log("profile req user " + req.user);
     });
   }
 ));
@@ -154,6 +161,8 @@ app.route("/")
   let countrySelection = location.getCountries();
   let citySelection = location.getCities();
 
+  console.log(req.user);
+
 // Get Users
 User.find({}, function(err, users){
   // If No Users found - render Register Page
@@ -170,7 +179,6 @@ User.find({}, function(err, users){
   } else {
     // find posts
       Post.find({}, function(err,posts) {
-        console.log(err);
           // if no posts found - Redirect to new post page
           if (posts.length === 0) {
              firstPost = "Create the First Post!";
@@ -180,15 +188,14 @@ User.find({}, function(err, users){
           else {
              // Find Featured Post
                 Post.findOne().sort('-date').limit(1).find(function(err, featurePost) {
-                  console.log(err);
-
                     res.render("home",
                     {
                     posts: posts,
                     countrySelection: countrySelection,
                     citySelection: citySelection,
                     featurePost: featurePost[0],
-                    users: users
+                    users: users,
+                    username: req.user
                   }
                 ) // end render home
 
@@ -244,20 +251,24 @@ app.route("/login")
   res.render("login");
 })
 
-// // login submit
-// .post('/login',
-//   passport.authenticate('local', { successRedirect: '/',
-//                                    failureRedirect: '/login',
-//                                    failureFlash: true })
-// );
+// login submit
+.post(function(req,res) {
+
+  User.loggedIn()
+
+  passport.authenticate('local', { successRedirect: '/',
+                                   failureRedirect: '/login',
+                                   failureFlash: true })
+                                 });
+
+
 // =============================================================================
 //                                COMPOSE PAGE
 // =============================================================================
 app.route("/compose")
-.get(function(req,res) {
-
+.get(loggedIn,(function(req,res) {
   req.isAuthenticated();
-  console.log(req.session);
+  console.log(req.user);
     let countrySelection = location.getCountries();
     let citySelection = location.getCities();
 
@@ -273,7 +284,7 @@ app.route("/compose")
         date: date
             });
           });
-        })
+        }))
 
 .post(function(req, res) {
 
@@ -382,16 +393,16 @@ app.route("/search")
 //==============================================================================
 
 app.get("/auth/google",
-  passport.authenticate('google', { scope: ["profile"] })
+  passport.authenticate('google', { scope: ["profile", 'email'] })
 );
 
 
-app.get("/auth/google/posts",
-  passport.authenticate('google', { failureRedirect: "/register" }),
-  function(req, res) {
-    res.redirect("/compose");
-  });
+app.get("/auth/google/posts", passport.authenticate('google', { failureRedirect: "/failed" }),
 
+   function(req, res) {
+     res.redirect("/compose");
+ }
+);
 
 // Logout
   app.get('/logout', function(req, res){
@@ -400,12 +411,22 @@ app.get("/auth/google/posts",
   });
 
 
+  app.get("/loggedinsuccess", function(req,res) {
+    res.render("logged-in");
+    function redirect() {
+      setTimeout(function(){ res.redirect("/compose") }, 3000);
+    }
+    redirect();
+  })
+
+
 //==============================================================================
 //                         DB RESET FUNCTIONALITY
 //                        AUTOMATIC NIGHTLY RESET?
 //==============================================================================
 
 app.post("/resetDB", function(req, res) {
+  console.log("click");
   mongoose.connect("mongodb://localhost:27017/blogDB", {
     useNewUrlParser: true,
     useUnifiedTopology: true,
@@ -415,8 +436,9 @@ app.post("/resetDB", function(req, res) {
   function myFunc() {
     res.redirect("/");  }
 setTimeout(myFunc, 1000);
-});
 
-app.listen(process.env.PORT || 3000, function() {
-  console.log("Server started on port 3000");
+ });
+
+app.listen(process.env.PORT || 4000, function() {
+  console.log("Server started on port 4000");
 });
