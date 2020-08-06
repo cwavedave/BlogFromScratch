@@ -119,9 +119,11 @@ passport.use(new GoogleStrategy({
   function(accessToken, refreshToken, profile, cb) {
     console.log("profile = " + profile);
 
-    User.findOrCreate({ googleId: profile.id, name: profile.name.givenName }, function (err, user) {
+    console.log(profile);
+    console.log("email = " + profile.emails[0].value);
+
+    User.findOrCreate({ googleId: profile.id, username: profile.name.givenName, email:profile.emails[0].value }, function (err, user) {
       return cb(err, user);
-      console.log("profile req user " + req.user);
     });
   }
 ));

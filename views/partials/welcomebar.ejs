@@ -1,0 +1,10 @@
+<div id="welcomeBar">
+
+<section class="welcome">
+<% if (username !== undefined) { %>
+    <% return "<div class='welcome'>Welcome " + username.username + "</div>" %>
+    <%}  else { %>
+    <% return "<div class='welcome'>Please <a href='/login'> login</a> or <a href='register'>register</a></div>" %>
+    <% } %>
+</section>
+</div>

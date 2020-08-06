@@ -503,6 +503,26 @@ font-size: min(max(16px, 4vw), 22px);
   }
 }
 
+#welcomeBar {
+  width: 150px!important;
+  height: 200px!important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: green;
+}
+
+.welcome {
+  align-items: center;
+  justify-content: center;
+  background: whitesmoke;
+  border: thin solid grey;
+  border-radius: 7px;
+  text-align: center;
+  padding: 25px 15px;
+  color: grey;
+}
+
 #datePost {
   font-size:.8rem;
   padding: 10px 0;
