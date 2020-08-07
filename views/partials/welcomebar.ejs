@@ -2,7 +2,7 @@
 
 <section class="welcome">
 <% if (username !== undefined) { %>
-    <% return "<div class='welcome'>Welcome " + username.username + "</div>" %>
+    <% return "<div class='welcome'>Welcome <b>" + username.username + "</b></div>" %>
     <%}  else { %>
     <% return "<div class='welcome'>Please <a href='/login'> login</a> or <a href='register'>register</a></div>" %>
     <% } %>

@@ -50,7 +50,7 @@ function loggedIn(req, res, next) {
 }
 
 // Set Database Access Port
-var conn = mongoose.connect("mongodb://localhost:27017/blogDB", {
+var conn = mongoose.connect("mongodb+srv://blogsite:Testing001@cluster0-ybqsl.mongodb.net/BlogDB?retryWrites=true&w=majority", {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   useFindAndModify: false
@@ -428,18 +428,8 @@ app.get("/auth/google/posts", passport.authenticate('google', { failureRedirect:
 //==============================================================================
 
 app.post("/resetDB", function(req, res) {
-  console.log("click");
-  mongoose.connect("mongodb://localhost:27017/blogDB", {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    useFindAndModify: false }, function(){
-    mongoose.connection.db.dropDatabase();
+    conn.db.dropDatabase();
   });
-  function myFunc() {
-    res.redirect("/");  }
-setTimeout(myFunc, 1000);
-
- });
 
 app.listen(process.env.PORT || 4000, function() {
   console.log("Server started on port 4000");
